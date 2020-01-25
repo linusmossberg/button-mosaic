@@ -1,4 +1,4 @@
-buttons = load('buttons_db\buttons.mat');
+buttons = load('..\buttons\buttons.mat');
 
 %%
 DC1 = buttons.data(1).dominant_colors;
@@ -35,9 +35,9 @@ for matching_index = idxx:idxx%length(buttons.data)
     
     figure(1)
     subplot(1,2,1)
-    image1 = imread(strcat('buttons_db\', buttons.data(matching_index).filename));
+    image1 = imread(strcat('..\buttons\', buttons.data(matching_index).filename));
     imshow(image1);
     subplot(1,2,2)
-    image2 = imread(strcat('buttons_db\', buttons.data(highest_similarity_index).filename));
+    image2 = imread(strcat('..\buttons\', buttons.data(highest_similarity_index).filename));
     imshow(imresize(image2, size(image1, 1:2)));
 end

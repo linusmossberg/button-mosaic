@@ -20,11 +20,12 @@ function image = smoothColor(image)
 %     image(:,:,2) = imdiffusefilt(image(:,:,2));
 %     image(:,:,3) = imdiffusefilt(image(:,:,3));
     
-    for i = 1:1
-        image(:,:,1) = diffuseWithEst(image(:,:,1));
-        image(:,:,2) = diffuseWithEst(image(:,:,2));
-        image(:,:,3) = diffuseWithEst(image(:,:,3));
+    f = waitbar(0, 'Smoothing image colors');
+    for i = 1:3
+        image(:,:,i) = diffuseWithEst(image(:,:,i));
+        waitbar(i/3, f, 'Smoothing image colors');
     end
+    close(f)
     
 %     image = im2uint8(image);
 %     image = rog_smooth(image, 0.01, 1, 3, 3);

@@ -29,7 +29,7 @@ function [L, circles] = addCircle(image, circles, centroid, radius, L)
     colors = reshape(rgb_region, [], 3);
     colors = colors(circle(:), :);
     
-    new_circle.dominant_colors = kDominantColors(colors, 3, 10000, 3);
+    new_circle.dominant_colors = kDominantColors(double(colors), 3, 10000, 3);
     new_circle.radius = radius;
     new_circle.position = centroid;
     

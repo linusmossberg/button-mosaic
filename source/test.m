@@ -1,6 +1,6 @@
-orig_image = imread("apples_proc.png");
+orig_image = imread("..\input_images\The_Scream_proc.png");
 orig_image = im2single(orig_image);
-%orig_image = imresize(orig_image, 1/3);
+orig_image = imresize(orig_image, 1/2);
 image = smoothColor(orig_image);
 
 [height, width, ~] = size(image); 
@@ -18,11 +18,10 @@ L = smoothLabels(L);
 
 %[L, num_colors] = superpixels(image,num_colors);
 
-result = zeros(size(image), 'single');
-
 circles = [];
 
-tic
+f = waitbar(0, 'Creating circles');
+
 for i = 1:num_colors
     mask = L == i;
 
@@ -40,26 +39,30 @@ for i = 1:num_colors
             break;
         end
         
-        %disp({ i, max_distance});
+        waitbar(((i - 1) + 5 / max_distance) / num_colors, f, 'Creating circles');
 
         mask2 = bwareafilt(distance >= max_distance - 1e-4, 1);
 
         centroid = regionprops(mask2, 'Centroid').Centroid;
 
-        [mask, circles] = addCircle(image, circles, centroid, max_distance, mask);
+        [mask, circles] = addCircle(orig_image, circles, centroid, max_distance, mask);
     end
 end
-toc
 
-figure
-drawCircles(circles)
-xlim([0 width])
-ylim([0 height])
+close(f)
 
-set ( gca, 'ydir', 'reverse' )
-pbaspect([width height 1])
-set(gca,'Color','k')
+result = createButtonMosaic(circles, zeros(size(orig_image)));
+imshow(result)
 
+% figure
+% drawCircles(circles)
+% xlim([0 width])
+% ylim([0 height])
+% 
+% set ( gca, 'ydir', 'reverse' )
+% pbaspect([width height 1])
+% set(gca,'Color','k')
+% 
 figure
 imshow(labeloverlay(ones(size(image)),L));
 
