@@ -1,7 +1,8 @@
-orig_image = imread("..\input_images\winter-quiet-1980.jpg");
+orig_image = imread("..\input_images\t.png");
 orig_image = im2single(orig_image);
 %orig_image = imresize(orig_image, 1/2);
-image = smoothColor(orig_image);
+%image = smoothColor(orig_image);
+image = orig_image;
 
 [height, width, ~] = size(image); 
 
@@ -10,7 +11,7 @@ warning('off','images:bwfilt:tie');
 lab_image = rgb2lab(image);
 
 %num_colors = findNumClusters(lab_image);
-num_colors = 5;
+num_colors = 2;
 
 [L, centers] = imsegkmeans(lab_image, num_colors);
 
@@ -20,7 +21,7 @@ L = smoothLabels(L);
 
 circles = [];
 
-min_distance = 10;
+min_distance = 1;
 
 f = waitbar(0, 'Creating circles');
 
@@ -33,9 +34,18 @@ for i = 1:num_colors
     mask(:,end) = false;
     
     while true
-        distance = bwdist(~mask);
+        
+        % Remove the boundary pixels of the region in order to not include
+        % these in the resulting radius.
+        distance = bwdist(~(mask & ~bwmorph(mask, 'remove')));
 
-        max_distance = max(distance(:));
+        [max_distance, idx] = max(distance(:));
+        
+        [row, col] = ind2sub(size(mask), idx);
+        
+        centroid = [col, row];
+        
+        max_distance = floor(max_distance);
         
         if(max_distance < min_distance)
             break;
@@ -43,16 +53,14 @@ for i = 1:num_colors
         
         waitbar(((i - 1) + min_distance / max_distance) / num_colors, f, 'Creating circles');
 
-        mask2 = bwareafilt(distance >= max_distance - 1e-4, 1);
-
-        centroid = regionprops(mask2, 'Centroid').Centroid;
+%         mask2 = bwareafilt(distance >= max_distance - 1e-4, 1);
+%         centroid = regionprops(mask2, 'Centroid').Centroid;
 
         [mask, circles] = addCircle(orig_image, circles, centroid, max_distance, mask);
     end
 end
 
 close(f)
-
 result = createButtonMosaic(circles, zeros(size(orig_image)));
 imshow(result)
 

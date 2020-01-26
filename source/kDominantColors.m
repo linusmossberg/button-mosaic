@@ -25,7 +25,7 @@ function result = kDominantColors(colors, k, max_colors, replicates, should_plot
         result.colors_lab = zeros(k, 3);
         for i = 1:num_unique_colors
             c = unique_colors(i, :);
-            result.dominance(i) = sum(sum(colors - c, 2) <= 1e-3);
+            result.dominance(i) = sum(sum(abs(colors - c), 2) <= 1e-3);
             result.colors_lab(i, :) = rgb2lab(c);
         end
         result.dominance = result.dominance / sum(result.dominance);
@@ -51,7 +51,7 @@ function result = kDominantColors(colors, k, max_colors, replicates, should_plot
     
     if should_plot
         pie(result.dominance);
-        colormap(lab2rgb(result.colors_lab));
+        colormap(clamp(lab2rgb(result.colors_lab), 0, 1));
     end
 end
 

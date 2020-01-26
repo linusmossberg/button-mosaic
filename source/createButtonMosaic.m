@@ -3,12 +3,14 @@ function result = createButtonMosaic(circles, result)
     
     button_history = 10;
     previous_filenames = repmat("", 1, button_history);
-    current_idx = 1; 
+    current_idx = 1;
+    
+    pairs = containers.Map;
     
     f = waitbar(0, 'Finding and inserting matching buttons');
     
     for i = 1:length(circles)
-        button_filenames = findMatchingButtons(circles(i).dominant_colors, 10, 5);
+        button_filenames = findMatchingButtons(circles(i), 10, 5);
         
         button_filename = button_filenames(1);
         for j = 1:length(button_filenames)
@@ -22,29 +24,36 @@ function result = createButtonMosaic(circles, result)
         previous_filenames(current_idx) = button_filename;
         current_idx = 1 + mod(current_idx, 10);
         
-        [image, ~, alpha] = imread(strcat('..\buttons\', button_filename));
+        if ~isKey(pairs, button_filename)
+            button = struct;
+            [button.image, ~, button.alpha] = imread(strcat('..\buttons\', button_filename));
+            button.image = im2double(button.image);
+            button.alpha = im2double(button.alpha);
+            pairs(button_filename) = button;
+        else
+            button = pairs(button_filename);
+        end
         
-        dim = 2 * circles(i).radius;
-        dims = [dim, dim];
-        rect = floor([circles(i).position - (dims / 2) dims]);
+        s_idx = circles(i).position - circles(i).radius;
+        e_idx = circles(i).position + circles(i).radius;
+    
+        x_range = s_idx(2):e_idx(2);
+        y_range = s_idx(1):e_idx(1);
         
-        region = imcrop(result, rect);
+        region = result(x_range, y_range, :);
+        
+        angle = rand() * 360;
+        button.image = imrotate(button.image, angle, 'crop', 'bicubic');
+        button.alpha = imrotate(button.alpha, angle, 'crop', 'bicubic');
         
         dims = size(region, 1:2);
         
-        image = im2double(image);
-        alpha = im2double(alpha);
+        button.image = imresize(button.image, dims, 'bicubic');
+        button.alpha = imresize(button.alpha, dims, 'bicubic');
         
-        angle = rand() * 360;
-        image = imrotate(image, angle, 'crop', 'bicubic');
-        alpha = imrotate(alpha, angle, 'crop', 'bicubic');
+        region = applyAlpha(button.image, button.alpha, region);
         
-        image = imresize(image, dims, 'bicubic');
-        alpha = imresize(alpha, dims, 'bicubic');
-        
-        region = applyAlpha(image, alpha, region);
-        
-        result(rect(2):rect(2)+rect(4), rect(1):rect(1)+rect(3), :) = region;
+        result(x_range, y_range, :) = region;
         
         waitbar(i / length(circles), f, 'Finding and inserting matching buttons');
     end

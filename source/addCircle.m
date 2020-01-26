@@ -1,19 +1,9 @@
 function [L, circles] = addCircle(image, circles, centroid, radius, L)
 
     new_circle = struct;
-    
-    [height, width] = size(image);
 
-    f_radius = ceil(radius);
-    s_idx = floor(centroid - [f_radius, f_radius]);
-    e_idx = ceil(centroid + [f_radius, f_radius]);
-    
-    s_idx(2) = clamp(s_idx(2), 1, height);
-    e_idx(2) = clamp(e_idx(2), 1, height);
-    s_idx(1) = clamp(s_idx(1), 1, width);
-    e_idx(1) = clamp(e_idx(1), 1, width);
-    
-    %%%
+    s_idx = centroid - radius;
+    e_idx = centroid + radius;
     
     x_range = s_idx(2):e_idx(2);
     y_range = s_idx(1):e_idx(1);
