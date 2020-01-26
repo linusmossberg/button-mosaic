@@ -3,9 +3,16 @@ function L = smoothLabels(L)
     
     for i = 1:num_labels
         mask = L == i;
-
-        mask = bwareaopen(~mask,16);
-        mask = bwareaopen(~mask,16);
+        
+        d = 10;
+        
+        mask = bwareaopen(~mask,d*d);
+        mask = bwareaopen(~mask,d*d);
+        
+        mask = imclose(mask, strel('disk', 2));
+        
+        mask = bwareaopen(~mask,d*d);
+        mask = bwareaopen(~mask,d*d);
         
         L(mask) = i;
     end

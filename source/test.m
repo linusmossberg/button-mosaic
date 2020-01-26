@@ -1,8 +1,8 @@
-orig_image = imread("..\input_images\t.png");
+orig_image = imread("..\input_images\scream.png");
 orig_image = im2single(orig_image);
 %orig_image = imresize(orig_image, 1/2);
-%image = smoothColor(orig_image);
-image = orig_image;
+image = smoothColor(orig_image);
+%image = orig_image;
 
 [height, width, ~] = size(image); 
 
@@ -11,11 +11,16 @@ warning('off','images:bwfilt:tie');
 lab_image = rgb2lab(image);
 
 %num_colors = findNumClusters(lab_image);
-num_colors = 2;
+num_colors = 8;
 
-[L, centers] = imsegkmeans(lab_image, num_colors);
+[L, centers] = imsegkmeans(image, num_colors);
 
 L = smoothLabels(L);
+
+figure
+imshow(labeloverlay(ones(size(image)),L));
+figure
+imshow(orig_image);
 
 %[L, num_colors] = superpixels(image,num_colors);
 
@@ -45,11 +50,11 @@ for i = 1:num_colors
         
         centroid = [col, row];
         
-        max_distance = floor(max_distance);
-        
         if(max_distance < min_distance)
             break;
         end
+        
+        max_distance = floor(max_distance);
         
         waitbar(((i - 1) + min_distance / max_distance) / num_colors, f, 'Creating circles');
 
@@ -60,8 +65,12 @@ for i = 1:num_colors
     end
 end
 
+%bg_color = mean(reshape(orig_image, [], 3), 1);
+%base_image = reshape(repmat(bg_color, width*height, 1), size(orig_image));
+base_image = zeros(size(orig_image));
+
 close(f)
-result = createButtonMosaic(circles, zeros(size(orig_image)));
+result = createButtonMosaic(circles, base_image, 8);
 imshow(result)
 
 % figure

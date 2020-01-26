@@ -7,16 +7,12 @@ function filenames = findMatchingButtons(circle, num_buttons, similarity_thresho
         buttons = load('..\buttons\buttons.mat');
     end
     
-    if nargin < 4
-        scale = 1;
-    end
-    
     max_similarities = repmat(-1e10, 1, num_buttons);
     indices = zeros(1, num_buttons, 'uint32');
     
     for i = 1:length(buttons.data)
         
-        if circle.radius >= 10000
+        if circle.radius >= 8
             similarity = dominantColorsSimilarity(circle.dominant_colors, buttons.data(i).dominant_colors, 30);
         else
             similarity = meanColorSimilarity(circle.mean_color_lab, buttons.data(i).mean_color_lab);

@@ -1,5 +1,12 @@
-function result = createButtonMosaic(circles, result)
+function result = createButtonMosaic(circles, result, AA)
+
+    if ~isPowerOfTwo(AA)
+        AA = 1;
+    end
+    
     result = im2double(result);
+    
+    result = imresize(result, AA, 'nearest');
     
     button_history = 10;
     previous_filenames = repmat("", 1, button_history);
@@ -34,8 +41,8 @@ function result = createButtonMosaic(circles, result)
             button = pairs(button_filename);
         end
         
-        s_idx = circles(i).position - circles(i).radius;
-        e_idx = circles(i).position + circles(i).radius;
+        s_idx = (circles(i).position - circles(i).radius) * AA;
+        e_idx = (circles(i).position + circles(i).radius) * AA;
     
         x_range = s_idx(2):e_idx(2);
         y_range = s_idx(1):e_idx(1);
@@ -43,13 +50,13 @@ function result = createButtonMosaic(circles, result)
         region = result(x_range, y_range, :);
         
         angle = rand() * 360;
-        button.image = imrotate(button.image, angle, 'crop', 'bicubic');
-        button.alpha = imrotate(button.alpha, angle, 'crop', 'bicubic');
+        button.image = imrotate(button.image, angle, 'crop', 'bilinear');
+        button.alpha = imrotate(button.alpha, angle, 'crop', 'bilinear');
         
         dims = size(region, 1:2);
         
-        button.image = imresize(button.image, dims, 'bicubic');
-        button.alpha = imresize(button.alpha, dims, 'bicubic');
+        button.image = imresize(button.image, dims, 'bilinear');
+        button.alpha = imresize(button.alpha, dims, 'bilinear');
         
         region = applyAlpha(button.image, button.alpha, region);
         
@@ -57,12 +64,21 @@ function result = createButtonMosaic(circles, result)
         
         waitbar(i / length(circles), f, 'Finding and inserting matching buttons');
     end
+    result = imresize(result, 1/AA, 'bilinear');
     close(f)
 end
 
 function result = applyAlpha(image, alpha, result)
     for i = 1:3
         result(:,:,i) = result(:,:,i) .* (1-alpha) + image(:,:,i) .* alpha;
+    end
+end
+
+function result = isPowerOfTwo(n) 
+    if n == 0
+        result = false;
+    else
+        result = (ceil(log2(n)) == floor(log2(n)));
     end
 end
 
