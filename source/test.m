@@ -1,6 +1,6 @@
-orig_image = imread("..\input_images\The_Scream_proc.png");
+orig_image = imread("..\input_images\winter-quiet-1980.jpg");
 orig_image = im2single(orig_image);
-orig_image = imresize(orig_image, 1/2);
+%orig_image = imresize(orig_image, 1/2);
 image = smoothColor(orig_image);
 
 [height, width, ~] = size(image); 
@@ -20,6 +20,8 @@ L = smoothLabels(L);
 
 circles = [];
 
+min_distance = 10;
+
 f = waitbar(0, 'Creating circles');
 
 for i = 1:num_colors
@@ -35,11 +37,11 @@ for i = 1:num_colors
 
         max_distance = max(distance(:));
         
-        if(max_distance < 2)
+        if(max_distance < min_distance)
             break;
         end
         
-        waitbar(((i - 1) + 5 / max_distance) / num_colors, f, 'Creating circles');
+        waitbar(((i - 1) + min_distance / max_distance) / num_colors, f, 'Creating circles');
 
         mask2 = bwareafilt(distance >= max_distance - 1e-4, 1);
 
@@ -63,8 +65,8 @@ imshow(result)
 % pbaspect([width height 1])
 % set(gca,'Color','k')
 % 
-figure
-imshow(labeloverlay(ones(size(image)),L));
+%figure
+%imshow(labeloverlay(ones(size(image)),L));
 
 
 

@@ -25,19 +25,22 @@ function result = createButtonMosaic(circles, result)
         [image, ~, alpha] = imread(strcat('..\buttons\', button_filename));
         
         dim = 2 * circles(i).radius;
-        dims = [dim dim];
+        dims = [dim, dim];
         rect = floor([circles(i).position - (dims / 2) dims]);
         
         region = imcrop(result, rect);
         
         dims = size(region, 1:2);
         
+        image = im2double(image);
+        alpha = im2double(alpha);
+        
         angle = rand() * 360;
         image = imrotate(image, angle, 'crop', 'bicubic');
-        %alpha = imrotate(alpha, angle, 'crop', 'bicubic');
+        alpha = imrotate(alpha, angle, 'crop', 'bicubic');
         
-        image = im2double(imresize(image, dims));
-        alpha = im2double(imresize(alpha, dims));
+        image = imresize(image, dims, 'bicubic');
+        alpha = imresize(alpha, dims, 'bicubic');
         
         region = applyAlpha(image, alpha, region);
         

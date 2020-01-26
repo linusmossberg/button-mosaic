@@ -32,6 +32,7 @@ function [L, circles] = addCircle(image, circles, centroid, radius, L)
     new_circle.dominant_colors = kDominantColors(double(colors), 3, 10000, 3);
     new_circle.radius = radius;
     new_circle.position = centroid;
+    new_circle.mean_color_lab = mean(rgb2lab(colors));
     
     circles = [circles new_circle];
 end
