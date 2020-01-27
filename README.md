@@ -16,15 +16,16 @@
 
 ![](output_images/Great_Wave_off_Kanagawa.png)
 
-## License
+## License and Attributions
 
-I've created the database of buttons by splitting, cropping, masking and resizing images of buttons sourced from various places. All source images are licensed to permit sharing and adaption and I've attributed the creators of these images under *attributions* bellow.
+I've created the database of buttons by splitting, cropping, masking and resizing images of buttons sourced from various places. All source images are licensed to permit sharing and adaption and I've attributed the creators of these images under *attributions* below.
 
 The paintings are all in the public domain, but some of the source images of buttons are licensed under the share-alike license CC BY-NC-SA 2.0. The reproduced images above are therefore licensed under:
 
 <https://creativecommons.org/licenses/by-nc-sa/2.0/>
 
-### Attributions
+<details><summary>Attributions</summary>
+<p> 
 
 I've sourced the images of buttons from the following creators/organizations:
 
@@ -107,3 +108,6 @@ I've sourced the images of buttons from the following creators/organizations:
 > Source creator label: welshkaren  
 > Website: <https://www.flickr.com/people/welshkaren>  
 > License: <https://creativecommons.org/licenses/by-nc/2.0/>
+
+</p>
+</details>
