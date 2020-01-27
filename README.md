@@ -24,7 +24,7 @@ The paintings are all in the public domain, but some of the source images of but
 
 <https://creativecommons.org/licenses/by-nc-sa/2.0/>
 
-<details><summary>Attributions</summary>
+<details><summary style="display: list-item; cursor: pointer;">Attributions</summary>
 
 <p>I've sourced the images of buttons from the following creators/organizations:</p>
 
