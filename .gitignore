@@ -3,7 +3,6 @@
 !.gitignore
 !README.md
 !LICENSE
-!_config.yml
 !/buttons/
 !/source/
 !/output_images/
