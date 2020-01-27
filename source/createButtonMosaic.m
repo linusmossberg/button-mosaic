@@ -14,7 +14,7 @@ function result = createButtonMosaic(circles, result, AA)
     
     pairs = containers.Map;
     
-    f = waitbar(0, 'Finding and inserting matching buttons');
+    f = waitbar(0, 'Finding and compositing matching objects');
     
     for i = 1:length(circles)
         button_filenames = findMatchingButtons(circles(i), 10, 5);
@@ -62,7 +62,7 @@ function result = createButtonMosaic(circles, result, AA)
         
         result(x_range, y_range, :) = region;
         
-        waitbar(i / length(circles), f, 'Finding and inserting matching buttons');
+        waitbar(i / length(circles), f, 'Finding and compositing matching objects');
     end
     result = imresize(result, 1/AA, 'bilinear');
     close(f)
