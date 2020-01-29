@@ -1,6 +1,6 @@
 function result = createButtonMosaic(circles, result, AA)
 
-    if ~isPowerOfTwo(AA)
+    if nargin < 3 || ~isPowerOfTwo(AA)
         AA = 1;
     end
     

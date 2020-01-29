@@ -20,13 +20,9 @@
 
 I've created the database of buttons by splitting, cropping, masking and resizing images of buttons sourced from various places. All source images are licensed to permit sharing and adaption and I've attributed the creators of these images under *attributions* below.
 
-The paintings are all public domain, but some of the source images of buttons are licensed under the share-alike license CC BY-NC-SA 2.0. The reproduced images above are therefore licensed under:
-
-<https://creativecommons.org/licenses/by-nc-sa/2.0/>
-
-I've sourced the images of buttons from the following creators:
-
 <details><summary style="display: list-item; cursor: pointer;">Attributions</summary>
+
+<p>I've sourced the images of buttons from the following creators:</p>
 
 <pre>
 Creator: <a href="https://www.flickr.com/people/93410621@N05" rel="nofollow">https://www.flickr.com/people/93410621@N05</a>
@@ -107,6 +103,11 @@ License: <a href="https://creativecommons.org/licenses/by-nc/2.0/" rel="nofollow
 <pre>
 Creator: <a href="https://www.flickr.com/people/welshkaren" rel="nofollow">https://www.flickr.com/people/welshkaren</a>
 License: <a href="https://creativecommons.org/licenses/by-nc/2.0/" rel="nofollow">https://creativecommons.org/licenses/by-nc/2.0/</a>
-</pre>
+</pre></details>
 
-</details>
+The paintings are all in the public domain, but some of the source images of buttons are licensed under the share-alike license CC BY-NC-SA 2.0. The reproduced images above are therefore licensed under:
+
+<https://creativecommons.org/licenses/by-nc-sa/4.0/>
+
+I've bumped the license to the latest 4.0 version since these are [compatible](https://creativecommons.org/share-your-work/licensing-considerations/compatible-licenses/) and because this is suggested by CC.
+
