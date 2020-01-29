@@ -103,7 +103,7 @@ License: <a href="https://creativecommons.org/licenses/by-nc/2.0/" rel="nofollow
 <pre>
 Creator: <a href="https://www.flickr.com/people/welshkaren" rel="nofollow">https://www.flickr.com/people/welshkaren</a>
 License: <a href="https://creativecommons.org/licenses/by-nc/2.0/" rel="nofollow">https://creativecommons.org/licenses/by-nc/2.0/</a>
-</pre></details>
+</pre></details><br/>
 
 The paintings are all in the public domain, but some of the source images of buttons are licensed under the share-alike license CC BY-NC-SA 2.0. The reproduced images above are therefore licensed under:
 
