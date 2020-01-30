@@ -1,6 +1,6 @@
 function createButtonDatabase(folder, out_folder)
     
-    return; % avoid accidentally running and ruining db
+    %return; % avoid accidentally running and ruining db
 
     clear saveImage;
     
@@ -9,7 +9,7 @@ function createButtonDatabase(folder, out_folder)
     
     attribution_entry = 'Source creator label: %s\nWebsite: %s\nLicense: %s\n\n';
     
-    feather_pixels = 5;
+    crop_pixels = 5;
 
     directories = dir(folder);
     for directory = directories'
@@ -31,16 +31,20 @@ function createButtonDatabase(folder, out_folder)
 
             for jpeg_file = jpg_files'
                 image = imread(strcat(jpeg_file.folder, '\', jpeg_file.name));
-                [image, alpha] = cropAndMaskCircle(image, feather_pixels);
+                [image, alpha] = cropAndMaskCircle(image, crop_pixels);
                 saveImage(image, alpha, prefix, out_folder);
             end
             
             for png_file = png_files'
                 image_path = strcat(png_file.folder, '\', png_file.name);
                 
-                % Twice because reading rgb with alpha is buggy
+                % Twice because reading rgb with alpha can be buggy
                 [~,~,alpha] = imread(image_path);
                 image = imread(image_path);
+                
+                if size(image, 3) == 1
+                    image = im2uint8(ind2rgb(image, gray));
+                end
 
                 mask = alpha >= 128;
                 
@@ -49,7 +53,7 @@ function createButtonDatabase(folder, out_folder)
 
                 for i = 1:size(BB, 1)
                     cropped_image = imcrop(image, BB(i, :));
-                    [cropped_image, alpha] = cropAndMaskCircle(cropped_image, feather_pixels);
+                    [cropped_image, alpha] = cropAndMaskCircle(cropped_image, crop_pixels);
                     saveImage(cropped_image, alpha, prefix, out_folder);
                 end
             end
@@ -58,7 +62,7 @@ function createButtonDatabase(folder, out_folder)
     fclose(readme_id);
 end
 
-function [image, alpha] = cropAndMaskCircle(image, feather_pixels)
+function [image, alpha] = cropAndMaskCircle(image, crop_pixels)
 
     max_resolution = 1024;
 
@@ -72,18 +76,26 @@ function [image, alpha] = cropAndMaskCircle(image, feather_pixels)
         image = imresize(image, [dim, dim]);
     end
     
-    [X, Y] = meshgrid(1:dim, 1:dim);
-    center = (dim + 1) / 2;
-    radius = dim / 2;
+    % Crop off crop_pixels pixels on each side to tighten mask
+    dim = dim - crop_pixels * 2;
+    r = centerCropWindow2d(size(image), [dim, dim]);
+    image = imcrop(image, r);
+    
+    dim_l = dim * 4;
+    
+    [X, Y] = meshgrid(1:dim_l, 1:dim_l);
+    center = (dim_l + 1) / 2;
+    radius = dim_l / 2;
     
     center_dist = sqrt((X - center).^2 + (Y - center).^2);
-    feather_radius = radius - feather_pixels;
+    %feather_radius = radius - feather_pixels;
     
-    alpha = (center_dist - feather_radius) / (radius - feather_radius);
-    alpha = 1 - clamp(alpha, 0, 1);
-    alpha = easeInEaseOut(alpha, 1.5);
+    %alpha = (center_dist - feather_radius) / (radius - feather_radius);
+    %alpha = 1 - clamp(alpha, 0, 1);
+    %alpha = easeInEaseOut(alpha, 1.5);
     
-    alpha = im2uint8(alpha);
+    alpha = im2uint8(center_dist <= radius);
+    alpha = imresize(alpha, size(image, 1:2), 'bilinear');
     image = im2uint8(image);
 end
 
@@ -125,15 +137,16 @@ function saveImage(image, alpha, prefix, folder)
 end
 
 function addReadmeHeader(readme_id)
-    header = ['This is a database with images of buttons sourced from various places. ', ...
-              'All source images were licensed to permit sharing and adaption. ', ... 
-              'The source images have been modified by cropping, masking and resizing them. ', ...
-              'In some cases, source images containing multiple buttons have also been split up into smaller images of individual buttons.\n\n', ...
-              'The filenames uses the following formatting:\n', ...
-              '[source-creator-label]_[licence]_[image-number].png\n\n', ...
-              'The file buttons.mat contains information about the 3 dominant colors and the mean colors of each button.\n\n', ...
-              '---------------------------------------------------\n\n', ...
-              'Attributions:\n\n'];
+    header = [
+    'This is a database with images of buttons sourced from various places. ', ...
+    'All source images were licensed to permit sharing and adaption. ', ... 
+    'The source images have been modified by splitting, cropping, masking and resizing them.\n\n', ...
+    'The filenames uses the following formatting:\n', ...
+    '[source-creator-label]_[licence]_[image-number].png\n\n', ...
+    'The file buttons.mat contains information about the 3 dominant colors and the mean colors of each button.\n\n', ...
+    '---------------------------------------------------\n\n', ...
+    'Attributions:\n\n'
+    ];
     
     fprintf(readme_id, header);
 end

@@ -1,4 +1,4 @@
-orig_image = imread("..\input_images\scream.png");
+orig_image = imread("..\input_images\t.png");
 orig_image = im2single(orig_image);
 %orig_image = imresize(orig_image, 1/2);
 image = smoothColor(orig_image);

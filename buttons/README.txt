@@ -1,4 +1,4 @@
-This is a database with images of buttons sourced from various places. All source images were licensed to permit sharing and adaption. The source images have been modified by cropping, masking and resizing them. In some cases, source images containing multiple buttons have also been split up into smaller images of individual buttons.
+This is a database with images of buttons sourced from various places. All source images were licensed to permit sharing and adaption. The source images have been modified by splitting, cropping, masking and resizing them.
 
 The filenames uses the following formatting:
 [source-creator-label]_[licence]_[image-number].png
@@ -41,6 +41,10 @@ Source creator label: mag3737
 Website: https://www.flickr.com/people/mag3737/
 License: https://creativecommons.org/licenses/by-nc-sa/2.0/
 
+Source creator label: deanhochman
+Website: https://www.flickr.com/people/deanhochman/
+License: https://creativecommons.org/licenses/by/2.0/
+
 Source creator label: littlelixie
 Website: https://www.flickr.com/people/littlelixie/
 License: https://creativecommons.org/licenses/by-nc/2.0/
@@ -49,8 +53,16 @@ Source creator label: obd-design
 Website: https://www.flickr.com/people/obd-design
 License: https://creativecommons.org/licenses/by-nc-sa/2.0/
 
+Source creator label: pexels
+Website: https://www.pexels.com/
+License: https://creativecommons.org/publicdomain/zero/1.0/
+
 Source creator label: pikrepo
 Website: https://pikrepo.com/
+License: https://creativecommons.org/publicdomain/zero/1.0/
+
+Source creator label: pixabay
+Website: https://pixabay.com/
 License: https://creativecommons.org/publicdomain/zero/1.0/
 
 Source creator label: pixbay
@@ -88,4 +100,8 @@ License: https://creativecommons.org/licenses/by-nc/2.0/
 Source creator label: welshkaren
 Website: https://www.flickr.com/people/welshkaren
 License: https://creativecommons.org/licenses/by-nc/2.0/
+
+Source creator label: wuestenigel
+Website: https://www.flickr.com/people/30478819@N08/
+License: https://creativecommons.org/licenses/by/2.0/
 
