@@ -1,4 +1,4 @@
-orig_image = imread("..\input_images\t.png");
+orig_image = imread("..\input_images\apples_proc.png");
 orig_image = im2single(orig_image);
 %orig_image = imresize(orig_image, 1/2);
 image = smoothColor(orig_image);
@@ -11,22 +11,21 @@ warning('off','images:bwfilt:tie');
 lab_image = rgb2lab(image);
 
 %num_colors = findNumClusters(lab_image);
-num_colors = 8;
+num_colors = 5;
+min_distance = 10;
 
 [L, centers] = imsegkmeans(image, num_colors);
 
-L = smoothLabels(L);
+L = smoothLabels(L, min_distance);
 
-figure
-imshow(labeloverlay(ones(size(image)),L));
-figure
-imshow(orig_image);
+% figure
+% imshow(labeloverlay(ones(size(image)),L));
+% figure
+% imshow(orig_image);
 
 %[L, num_colors] = superpixels(image,num_colors);
 
 circles = [];
-
-min_distance = 1;
 
 f = waitbar(0, 'Creating circles');
 
@@ -42,7 +41,7 @@ for i = 1:num_colors
         
         % Remove the boundary pixels of the region in order to not include
         % these in the resulting radius.
-        distance = bwdist(~(mask & ~bwmorph(mask, 'remove')));
+        distance = bwdist(~(mask &  ~bwperim(mask,8)));
 
         [max_distance, idx] = max(distance(:));
         

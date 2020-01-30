@@ -55,8 +55,8 @@ function result = createButtonMosaic(circles, result, AA)
         
         dims = size(region, 1:2);
         
-        button.image = imresize(button.image, dims, 'bilinear');
-        button.alpha = imresize(button.alpha, dims, 'bilinear');
+        button.image = imresize(button.image, dims, 'nearest');
+        button.alpha = imresize(button.alpha, dims, 'nearest');
         
         region = applyAlpha(button.image, button.alpha, region);
         
