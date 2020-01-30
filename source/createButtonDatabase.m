@@ -81,7 +81,8 @@ function [image, alpha] = cropAndMaskCircle(image, crop_pixels)
     r = centerCropWindow2d(size(image), [dim, dim]);
     image = imcrop(image, r);
     
-    dim_l = dim * 4;
+    %dim_l = dim * 4;
+    dim_l = dim;
     
     [X, Y] = meshgrid(1:dim_l, 1:dim_l);
     center = (dim_l + 1) / 2;
@@ -95,7 +96,7 @@ function [image, alpha] = cropAndMaskCircle(image, crop_pixels)
     %alpha = easeInEaseOut(alpha, 1.5);
     
     alpha = im2uint8(center_dist <= radius);
-    alpha = imresize(alpha, size(image, 1:2), 'bilinear');
+    %alpha = imresize(alpha, size(image, 1:2), 'bilinear');
     image = im2uint8(image);
 end
 
