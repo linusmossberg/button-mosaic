@@ -5,6 +5,15 @@ function filenames = findMatchingButtons(circle, num_buttons, similarity_thresho
     
     if isempty(buttons)
         buttons = load('..\buttons\buttons.mat');
+        
+        if isfile('..\buttons\skip.json')
+            skip = jsondecode(fileread('..\buttons\skip.json'));
+            skip_filenames = string(skip.filenames)';
+            filenames = string({buttons.data.filename});
+            
+            [~,remove_idx,~] = intersect(filenames, skip_filenames);
+            buttons.data(remove_idx) = [];
+        end
     end
     
     max_similarities = repmat(-1e10, 1, num_buttons);

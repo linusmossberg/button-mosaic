@@ -1,14 +1,18 @@
-function result = createButtonMosaic(circles, result, AA)
+function result = createButtonMosaic(circles, result, scale, AA)
+    
+    if nargin < 3 || ~isPowerOfTwo(scale)
+        scale = 1;
+    end
 
-    if nargin < 3 || ~isPowerOfTwo(AA)
+    if nargin < 4 || ~isPowerOfTwo(AA)
         AA = 1;
     end
     
     result = im2double(result);
     
-    result = imresize(result, AA, 'nearest');
+    result = imresize(result, scale * AA, 'nearest');
     
-    button_history = 10;
+    button_history = 20;
     previous_filenames = repmat("", 1, button_history);
     current_idx = 1;
     
@@ -17,19 +21,17 @@ function result = createButtonMosaic(circles, result, AA)
     f = waitbar(0, 'Finding and compositing matching objects');
     
     for i = 1:length(circles)
-        button_filenames = findMatchingButtons(circles(i), 10, 5);
+        button_filenames = findMatchingButtons(circles(i), 20, 5);
         
         button_filename = button_filenames(1);
-        for j = 1:length(button_filenames)
-            idx = find(previous_filenames == button_filenames(j), 1, 'first');
-            if isempty(idx)
-                button_filename = button_filenames(j);
-                break;
-            end
+        [~,best_idx] = setdiff(button_filenames, previous_filenames, 'stable');
+        
+        if ~isempty(best_idx)
+            button_filename = button_filenames(best_idx(1));
         end
         
         previous_filenames(current_idx) = button_filename;
-        current_idx = 1 + mod(current_idx, 10);
+        current_idx = 1 + mod(current_idx, button_history);
         
         if ~isKey(pairs, button_filename)
             button = struct;
@@ -41,8 +43,8 @@ function result = createButtonMosaic(circles, result, AA)
             button = pairs(button_filename);
         end
         
-        s_idx = (circles(i).position - circles(i).radius) * AA;
-        e_idx = (circles(i).position + circles(i).radius) * AA;
+        s_idx = (circles(i).position - circles(i).radius) * scale * AA;
+        e_idx = (circles(i).position + circles(i).radius) * scale * AA;
     
         x_range = s_idx(2):e_idx(2);
         y_range = s_idx(1):e_idx(1);
@@ -50,13 +52,13 @@ function result = createButtonMosaic(circles, result, AA)
         region = result(x_range, y_range, :);
         
         angle = rand() * 360;
-        button.image = imrotate(button.image, angle, 'crop', 'bilinear');
-        button.alpha = imrotate(button.alpha, angle, 'crop', 'bilinear');
+        button.image = imrotate(button.image, angle, 'crop', 'bicubic');
+        button.alpha = imrotate(button.alpha, angle, 'crop', 'bicubic');
         
         dims = size(region, 1:2);
         
-        button.image = imresize(button.image, dims, 'nearest');
-        button.alpha = imresize(button.alpha, dims, 'nearest');
+        button.image = imresize(button.image, dims, 'bicubic');
+        button.alpha = imresize(button.alpha, dims, 'bicubic');
         
         region = applyAlpha(button.image, button.alpha, region);
         
@@ -64,7 +66,7 @@ function result = createButtonMosaic(circles, result, AA)
         
         waitbar(i / length(circles), f, 'Finding and compositing matching objects');
     end
-    result = imresize(result, 1/AA, 'bilinear');
+    result = imresize(result, 1/AA, 'bicubic');
     close(f)
 end
 
