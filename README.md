@@ -35,6 +35,15 @@
 	<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
 
+## Braided Streams - *Katmai National Park and Preserve*
+
+<div about="output_images/braided-streams.jpg">
+	<img src="output_images/braided-streams.jpg" alt="Braided Streams" />
+	<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
+</div>
+
+[Source Photograph](https://www.flickr.com/photos/katmainps/43417091514)
+
 ## License and Attributions
 
 I've created the database of buttons by splitting, cropping, masking and resizing images of buttons sourced from various places. All source images are licensed to permit sharing and adaption and I've attributed the creators of these images under *attributions* below.
@@ -143,7 +152,7 @@ License: <a href="https://creativecommons.org/licenses/by/2.0/">https://creative
 
 ___
 
-The paintings are all in the public domain, but some of the source images of buttons are licensed under the share-alike license CC BY-NC-SA 2.0. The reproduced images above are therefore licensed under:
+The reproduced paintings and photographs are all in the public domain, but some of the source images of buttons are licensed under the share-alike license CC BY-NC-SA 2.0. The reproduced images above are therefore licensed under:
 
 <https://creativecommons.org/licenses/by-nc-sa/4.0/>
 

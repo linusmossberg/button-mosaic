@@ -1,4 +1,4 @@
-orig_image = imread("..\input_images\pxfuelbranch_proc.png");
+orig_image = imread("..\input_images\madagascar_oli_2017018_lrg.png");
 orig_image = im2single(orig_image);
 %orig_image = imresize(orig_image, 1/2);
 image = smoothColor(orig_image);
@@ -23,7 +23,7 @@ lab_image = rgb2lab(image);
 %num_colors = 8;
 %min_distance = 1;
 
-num_colors = 2;
+num_colors = 4;
 min_distance = 1;
 
 [L, centers] = imsegkmeans(image, num_colors);

@@ -22,7 +22,7 @@ function L = smoothLabels(L, min_distance)
         %d = 10;
         %radius = 2;
         
-        d = 5;
+        d = 8;
         radius = 1;
         
         mask = bwareaopen(~mask,d*d);
