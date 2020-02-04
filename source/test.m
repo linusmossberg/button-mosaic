@@ -1,7 +1,7 @@
-orig_image = imread("..\input_images\madagascar_oli_2017018_lrg.png");
+orig_image = imread("..\input_images\piqsels.com-id-feidg_proc.png");
 orig_image = im2single(orig_image);
 %orig_image = imresize(orig_image, 1/2);
-image = smoothColor(orig_image);
+image = smoothColor(orig_image, 1);
 
 [height, width, ~] = size(image); 
 
@@ -29,6 +29,9 @@ min_distance = 1;
 [L, centers] = imsegkmeans(image, num_colors);
 
 L = smoothLabels(L, floor(min_distance));
+
+L(L==2)=0;
+mm=L==0;
 
 %min_distance = 1.1;
 
@@ -101,7 +104,8 @@ disp(strcat("Number of circles: ", num2str(length(circles))));
 % imshow(remaining)
 
 %remaining_color = mean(reshape(orig_image(~repmat(remaining, 1, 1, 3)), [], 3));
-base_image = zeros(size(orig_image));
+%base_image = zeros(size(orig_image));
+base_image = repmat(im2double(mm),1,1,3);
 
 close(f)
 result = createButtonMosaic(circles, base_image, 4, 4);

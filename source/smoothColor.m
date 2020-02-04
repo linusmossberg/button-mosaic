@@ -1,4 +1,4 @@
-function image = smoothColor(image)
+function image = smoothColor(image, scale)
 %     image_lab = rgb2lab(image);
 %     
 %     patch = imcrop(image_lab,[83,17,65,65]);
@@ -22,7 +22,7 @@ function image = smoothColor(image)
     
     f = waitbar(0, 'Smoothing image colors');
     for i = 1:3
-        image(:,:,i) = diffuseWithEst(image(:,:,i));
+        image(:,:,i) = diffuseWithEst(image(:,:,i), scale);
         waitbar(i/3, f, 'Smoothing image colors');
     end
     close(f)
@@ -32,8 +32,10 @@ function image = smoothColor(image)
 %     image = im2single(image);
 end
 
-function gray_image = diffuseWithEst(gray_image)
-    [grad_thresh, num_iter] = imdiffuseest(gray_image);
+function gray_image = diffuseWithEst(gray_image, scale)
+    r = centerCropWindow2d(size(gray_image), round(size(gray_image) * scale));
+
+    [grad_thresh, num_iter] = imdiffuseest(imcrop(gray_image, r));
     
     gray_image = imdiffusefilt(gray_image, ...
                                'ConductionMethod', 'quadratic', ...
