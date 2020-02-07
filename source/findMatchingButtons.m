@@ -1,6 +1,6 @@
 % Finds num_buttons of the most similar buttons.
 
-function filenames = findMatchingButtons(circle, num_buttons, similarity_threshold)
+function [filenames, mean_colors_lab] = findMatchingButtons(circle, num_buttons, similarity_threshold)
     persistent buttons;
     
     if isempty(buttons)
@@ -9,9 +9,9 @@ function filenames = findMatchingButtons(circle, num_buttons, similarity_thresho
         if isfile('..\buttons\skip.json')
             skip = jsondecode(fileread('..\buttons\skip.json'));
             skip_filenames = string(skip.filenames)';
-            filenames = string({buttons.data.filename});
+            buttons_filenames = string({buttons.data.filename});
             
-            [~,remove_idx,~] = intersect(filenames, skip_filenames);
+            [~,remove_idx,~] = intersect(buttons_filenames, skip_filenames);
             buttons.data(remove_idx) = [];
         end
     end
@@ -21,7 +21,7 @@ function filenames = findMatchingButtons(circle, num_buttons, similarity_thresho
     
     for i = 1:length(buttons.data)
         
-        if circle.radius >= 8
+        if circle.radius >= 16
             similarity = dominantColorsSimilarity(circle.dominant_colors, buttons.data(i).dominant_colors, 30);
         else
             similarity = meanColorSimilarity(circle.mean_color_lab, buttons.data(i).mean_color_lab);
@@ -43,8 +43,10 @@ function filenames = findMatchingButtons(circle, num_buttons, similarity_thresho
         indices(max_similarities(1) > (max_similarities + similarity_threshold)) = [];
         
         filenames = string({buttons.data(indices).filename});
+        mean_colors_lab = reshape([buttons.data(indices).mean_color_lab], 3, [])';
     else
         filenames = '';
+        mean_colors_lab = [];
     end
 end
 

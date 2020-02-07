@@ -9,8 +9,9 @@ function result = kDominantColors(colors, k, max_colors, replicates, should_plot
     num_colors = size(colors, 1);
     
     if num_colors > max_colors
-        step_size = round(num_colors/max_colors);
-        colors = colors(1:step_size:num_colors, :);
+        colors = reshape(colors, [], 1, 3);
+        colors = imresize(colors, [max_colors, 1], 'bilinear');
+        colors = reshape(colors, [], 3);
     end
     
     % If there are less than k unique colors, then k-means will not work.

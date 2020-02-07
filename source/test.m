@@ -1,7 +1,7 @@
-orig_image = imread("..\input_images\piqsels.com-id-feidg_proc.png");
+orig_image = imread("..\input_images\Grant_Wood_-_American_Gothic_-_Google_Art_Project_proc_4096.png");
 orig_image = im2single(orig_image);
-%orig_image = imresize(orig_image, 1/2);
-image = smoothColor(orig_image, 1);
+%orig_image = imresize(orig_image, 1/8);
+image = smoothColor(orig_image, 0.25);
 
 [height, width, ~] = size(image); 
 
@@ -23,15 +23,12 @@ lab_image = rgb2lab(image);
 %num_colors = 8;
 %min_distance = 1;
 
-num_colors = 4;
-min_distance = 1;
+num_colors = 8;
+min_distance = 4;
 
 [L, centers] = imsegkmeans(image, num_colors);
 
 L = smoothLabels(L, floor(min_distance));
-
-L(L==2)=0;
-mm=L==0;
 
 %min_distance = 1.1;
 
@@ -63,9 +60,6 @@ for i = 1:(num_colors + 1)
         distance = bwdist(~(mask & ~bwmorph(mask,'remove')));
 
         [max_distance, ~] = max(distance(:));
-        
-        %[row, col] = ind2sub(size(mask), idx);
-        %centroid = [col, row];
         
         max_region = bwareafilt(distance >= max_distance - 1e-4, 1);
         [row, col] = ind2sub(size(mask), find(max_region));
@@ -104,11 +98,10 @@ disp(strcat("Number of circles: ", num2str(length(circles))));
 % imshow(remaining)
 
 %remaining_color = mean(reshape(orig_image(~repmat(remaining, 1, 1, 3)), [], 3));
-%base_image = zeros(size(orig_image));
-base_image = repmat(im2double(mm),1,1,3);
+base_image = zeros(size(orig_image));
 
 close(f)
-result = createButtonMosaic(circles, base_image, 4, 4);
+result = createButtonMosaic(circles, base_image, 1, 4);
 
 figure
 imshow(result)

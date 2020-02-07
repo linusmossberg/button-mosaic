@@ -21,13 +21,15 @@ function result = createButtonMosaic(circles, result, scale, AA)
     f = waitbar(0, 'Finding and compositing matching objects');
     
     for i = 1:length(circles)
-        button_filenames = findMatchingButtons(circles(i), 20, 5);
+        [button_filenames, mean_colors_lab] = findMatchingButtons(circles(i), 20, 5);
         
         button_filename = button_filenames(1);
+        mean_color_lab = mean_colors_lab(1, :);
         [~,best_idx] = setdiff(button_filenames, previous_filenames, 'stable');
         
         if ~isempty(best_idx)
             button_filename = button_filenames(best_idx(1));
+            mean_color_lab = mean_colors_lab(best_idx(1), :);
         end
         
         previous_filenames(current_idx) = button_filename;
@@ -59,6 +61,9 @@ function result = createButtonMosaic(circles, result, scale, AA)
         
         button.image = imresize(button.image, dims, 'bicubic');
         button.alpha = imresize(button.alpha, dims, 'bicubic');
+        
+        Lab_diff = circles(i).mean_color_lab - mean_color_lab; 
+        button.image = lab2rgb(rgb2lab(button.image) + reshape(Lab_diff, 1, 1, 3));
         
         region = applyAlpha(button.image, button.alpha, region);
         
