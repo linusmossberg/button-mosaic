@@ -1,9 +1,16 @@
 # Object Packing Mosaic
 
-### American Gothic - *Grant Wood*
+### The Scream - *Edvard Munch*
 
-<div about="output_images/american-gothic.jpg">
-  <img src="output_images/american-gothic.jpg" alt title="17502 buttons"/>
+<div about="output_images/the-scream.jpg">
+  <img src="output_images/the-scream.jpg" alt title="31361 buttons" />
+  <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
+</div>
+
+### The Great Wave off Kanagawa - *Hokusai*
+
+<div about="output_images/great-wave-off-kanagawa.jpg">
+  <img src="output_images/great-wave-off-kanagawa.jpg" alt title="17403 buttons" />
   <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
 
@@ -14,13 +21,6 @@
 	<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
 
-### The Great Wave off Kanagawa - *Hokusai*
-
-<div about="output_images/great-wave-off-kanagawa.jpg">
-  <img src="output_images/great-wave-off-kanagawa.jpg" alt title="17403 buttons" />
-  <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
-</div>
-
 ### De Tio Största, nr 3 - *Hilma af Klint*
 
 <div about="output_images/de-tio-största-nr-3.jpg">
@@ -28,10 +28,10 @@
 	<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
 
-### The Scream - *Edvard Munch*
+### American Gothic - *Grant Wood*
 
-<div about="output_images/the-scream.jpg">
-  <img src="output_images/the-scream.jpg" alt title="31361 buttons" />
+<div about="output_images/american-gothic.jpg">
+  <img src="output_images/american-gothic.jpg" alt title="17502 buttons"/>
   <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
 
