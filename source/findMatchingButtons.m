@@ -21,7 +21,7 @@ function [filenames, mean_colors_lab] = findMatchingButtons(circle, num_buttons,
     
     for i = 1:length(buttons.data)
         
-        if circle.radius >= 16
+        if circle.radius >= 16%16
             similarity = dominantColorsSimilarity(circle.dominant_colors, buttons.data(i).dominant_colors, 30);
         else
             similarity = meanColorSimilarity(circle.mean_color_lab, buttons.data(i).mean_color_lab);
