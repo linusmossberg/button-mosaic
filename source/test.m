@@ -30,8 +30,8 @@ min_distance = 4;
 for i = 1:max(L(:))
     mask = L == i;
     
-    d = 32;
-    radius = 8;
+    d = 16;
+    radius = 4;
 
     mask = bwareaopen(~mask,d*d);
     mask = bwareaopen(~mask,d*d);
