@@ -21,7 +21,7 @@ function L = smoothLabels(L, min_distance)
 %         % Scream
 %         %d = 10;
 %         %radius = 2;
-%         
+%
 %         d = 32;
 %         radius = 8;
 %         

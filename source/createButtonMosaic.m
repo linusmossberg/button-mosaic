@@ -21,7 +21,7 @@ function result = createButtonMosaic(circles, result, scale, AA)
     f = waitbar(0, 'Finding and compositing matching objects');
     
     for i = 1:length(circles)
-        [button_filenames, mean_colors_lab] = findMatchingButtons(circles(i), 20, 5);
+        [button_filenames, mean_colors_lab] = findMatchingButtons(circles(i), 20, 2.5);
         
         button_filename = button_filenames(1);
         mean_color_lab = mean_colors_lab(1, :);

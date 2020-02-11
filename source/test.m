@@ -1,7 +1,7 @@
-orig_image = imread("..\input_images\The_Scream_proc.png");
+orig_image = imread("..\input_images\earring.png");
 orig_image = im2single(orig_image);
 %orig_image = imresize(orig_image, 1/8);
-image = smoothColor(orig_image, 0.25);
+image = smoothColor(orig_image, 0.5);
 
 warning('off','images:bwfilt:tie');
 
@@ -22,16 +22,24 @@ warning('off','images:bwfilt:tie');
 %num_colors = 8;
 %min_distance = 1;
 
-num_colors = 10;
-min_distance = 4;
+% Earring
+% num_colors = 12;
+% min_radius = 4;
+% max_radius = 800;
+% radius_reduction_cutoff = 256;
+
+num_colors = 12;
+min_radius = 4;
+max_radius = 800;
+radius_reduction_cutoff = 256;
 
 [L, ~] = imsegkmeans(image, num_colors);
 
 for i = 1:max(L(:))
     mask = L == i;
     
-    d = 16;
-    radius = 4;
+    d = 32;
+    radius = 8;
 
     mask = bwareaopen(~mask,d*d);
     mask = bwareaopen(~mask,d*d);
@@ -46,12 +54,12 @@ imshow(labeloverlay(ones(size(orig_image)),L));
 
 new_L = conCompSplitLabel(L, 'descend');
 
-new_L = smoothLabels(new_L, floor(min_distance));
+new_L = smoothLabels(new_L, floor(min_radius));
 
 new_L = conCompSplitLabel(new_L, 'ascend');
 
 orig_L = new_L;
-
+%%
 num_regions = max(new_L(:));
 
 figure
@@ -101,21 +109,26 @@ for i = 1:(num_regions + 1)
         % these in the resulting radius.
         distance = bwdist(~(small_mask & ~bwmorph(small_mask,'remove')));
 
-        [max_distance, ~] = max(distance(:));
+        [radius, ~] = max(distance(:));
         
-        max_region = bwareafilt(distance >= max_distance - 1e-4, 1);
+        max_region = bwareafilt(distance >= radius - 1e-4, 1);
         [row, col] = ind2sub(size(small_mask), find(max_region));
         mean_centroid = [mean(row), mean(col)];
         [~, idx] = min((row - mean(row)).^2 + (col - mean(col)).^2);
         centroid = [col(idx), row(idx)];
         
-        if(max_distance < min_distance)
+        if(radius < min_radius)
             break;
         end
         
-        max_distance = floor(max_distance);
+        if radius > radius_reduction_cutoff
+            radius_diff =  radius - radius_reduction_cutoff;
+            radius = radius ./ (1 + radius_diff/max_radius);
+        end
+        
+        radius = floor(radius);
 
-        [small_mask, circles] = addCircle(small_orig_image, circles, centroid, max_distance, small_mask, offset);
+        [small_mask, circles] = addCircle(small_orig_image, circles, centroid, radius, small_mask, offset);
     end
     
     if(i <= (num_regions - 1))
