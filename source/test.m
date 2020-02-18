@@ -1,7 +1,7 @@
-orig_image = imread("..\input_images\646full-the-holy-mountain-screenshot.jpg");
-orig_image = im2double(orig_image);
+image = imread("..\input_images\646full-the-holy-mountain-screenshot.jpg");
+image = im2double(image);
 %orig_image = imresize(orig_image, 1/8);
-image = smoothColor(orig_image, 1.0);
+%image = smoothColor(orig_image, 1.0);
 
 warning('off','images:bwfilt:tie');
 
@@ -28,42 +28,22 @@ warning('off','images:bwfilt:tie');
 % max_radius = 800;
 % radius_reduction_cutoff = 256;
 
-num_colors = 12;
-min_radius = 4;
-max_radius = 800;
-radius_reduction_cutoff = 256;
+settings.num_colors = 12;
+settings.min_radius = 4;
+settings.max_radius = 800;
+settings.radius_reduction_start = 256;
+settings.smooth_est_scale = 1.0;
+settings.scale = 1;
+settings.AA = 4;
+settings.label_close_radius = 8;
+settings.label_min_area = 32*32;
 
-[L, ~] = imsegkmeans(im2single(image), num_colors);
+label_image = segmentImage(image, settings);
 
-for i = 1:max(L(:))
-    mask = L == i;
-    
-    d = 32;
-    radius = 8;
-
-    mask = bwareaopen(~mask,d*d);
-    mask = bwareaopen(~mask,d*d);
-    mask = imclose(mask, strel('disk', radius));
-    mask = bwareaopen(~mask,d*d);
-    mask = bwareaopen(~mask,d*d);
-    L(mask) = i; 
-end
+num_regions = max(label_image(:));
 
 figure
-imshow(labeloverlay(ones(size(orig_image)),L));
-
-new_L = conCompSplitLabel(L, 'descend');
-
-new_L = smoothLabels(new_L, floor(min_radius));
-
-new_L = conCompSplitLabel(new_L, 'ascend');
-
-orig_L = new_L;
-
-num_regions = max(new_L(:));
-
-figure
-imshow(labeloverlay(ones(size(orig_image)),new_L));
+imshow(labeloverlay(ones(size(image)), label_image));
 
 completed_area = 0;
 
@@ -71,12 +51,12 @@ circles = [];
 
 f = waitbar(0, 'Creating circles');
 
-remaining = false(size(new_L));
+remaining = false(size(label_image));
 
 for i = 1:(num_regions + 1)
     
     if i <= num_regions
-        mask = new_L == i;
+        mask = label_image == i;
         stats = regionprops(mask, 'BoundingBox', 'Area');
         
         completed_area = completed_area + stats.Area;
@@ -95,10 +75,10 @@ for i = 1:(num_regions + 1)
         BB(2) = clamp(BB(2) - 1, 1, h);
         
         small_mask = mask(BB(2):BB(2)+BB(4)-1, BB(1):BB(1)+BB(3)-1);
-        small_orig_image = orig_image(BB(2):BB(2)+BB(4)-1, BB(1):BB(1)+BB(3)-1, :);
+        small_image = image(BB(2):BB(2)+BB(4)-1, BB(1):BB(1)+BB(3)-1, :);
         offset = [BB(1) - 1, BB(2) - 1];
     else
-        small_orig_image = orig_image;
+        small_image = image;
         small_mask = remaining;
         offset = [0, 0];
     end
@@ -117,24 +97,24 @@ for i = 1:(num_regions + 1)
         [~, idx] = min((row - mean(row)).^2 + (col - mean(col)).^2);
         centroid = [col(idx), row(idx)];
         
-        if(radius < min_radius)
+        if(radius < settings.min_radius)
             break;
         end
         
-        if radius > radius_reduction_cutoff
-            radius_diff =  radius - radius_reduction_cutoff;
+        if radius > settings.radius_reduction_start
+            radius_diff =  radius - radius_reduction_start;
             radius = radius ./ (1 + radius_diff/max_radius);
         end
         
         radius = floor(radius);
 
-        [small_mask, circles] = addCircle(small_orig_image, circles, centroid, radius, small_mask, offset);
+        [small_mask, circles] = addCircle(small_image, circles, centroid, radius, small_mask, offset);
     end
     
     if(i <= (num_regions - 1))
-        small_new_L = new_L(BB(2):BB(2)+BB(4)-1, BB(1):BB(1)+BB(3)-1);
-        [small_new_L, small_mask] = distributeUnusable(small_mask, small_new_L, i, true);
-        new_L(BB(2):BB(2)+BB(4)-1, BB(1):BB(1)+BB(3)-1) = small_new_L;
+        small_label_image = label_image(BB(2):BB(2)+BB(4)-1, BB(1):BB(1)+BB(3)-1);
+        [small_label_image, small_mask] = distributeUnusable(small_mask, small_label_image, i, true);
+        label_image(BB(2):BB(2)+BB(4)-1, BB(1):BB(1)+BB(3)-1) = small_label_image;
     end
     
     if i <= num_regions
@@ -144,7 +124,7 @@ for i = 1:(num_regions + 1)
         remaining = small_mask;
     end
     
-    waitbar(completed_area / numel(new_L), f, 'Creating circles');
+    waitbar(completed_area / numel(label_image), f, 'Creating circles');
 end
 
 % Goal is to maximize coverage while minimizing number of circles, provided
@@ -153,7 +133,7 @@ disp(strcat("Uncovered pixels: ", num2str(100*sum(remaining(:)) / numel(remainin
 disp(strcat("Number of circles: ", num2str(length(circles))));
 
 close(f)
-result = createButtonMosaic(circles, zeros(size(orig_image)), 1, 4);
+result = createButtonMosaic(circles, zeros(size(image)), settings.scale, settings.AA);
 
 figure
 imshow(result)
