@@ -1,24 +1,25 @@
-function result = kDominantColors(colors, k, max_colors, replicates, should_plot)
+function result = kDominantColors(image, mask, k, max_colors, replicates, should_plot)
 
-    if nargin < 5
+    if nargin < 6
         should_plot = false;
     end
     
-    colors = reshape(colors, [], 3);
+    num_colors = prod(size(image), 1:2);
     
-    num_colors = size(colors, 1);
-    
-    if num_colors > max_colors
-        colors = reshape(colors, [], 1, 3);
-        colors = imresize(colors, [max_colors, 1], 'bilinear');
-        colors = reshape(colors, [], 3);
+    resize_scale = 1;
+    if(num_colors > max_colors)
+        resize_scale = sqrt(max_colors/num_colors);
     end
+    
+    mask = imresize(mask, resize_scale, 'nearest');
     
     % If there are less than k unique colors, then k-means will not work.
     % It does however become trivial to determine dominant colors in such
     % cases.
     
-    unique_colors = uniquetol(colors, 1e-3, 'ByRows', true);
+    color_samples = reshape(imresize(image, resize_scale, 'nearest'), [], 3);
+    color_samples = color_samples(mask(:), :);
+    unique_colors = uniquetol(color_samples, 1e-3, 'ByRows', true);
     num_unique_colors = size(unique_colors, 1);
     
     if(num_unique_colors <= k)
@@ -35,7 +36,10 @@ function result = kDominantColors(colors, k, max_colors, replicates, should_plot
         result.dominance = result.dominance(idx);
         result.colors_lab = result.colors_lab(idx, :);
     else
-        colors_lab = rgb2lab(colors);
+        interpolated_color_samples = reshape(imresize(image, resize_scale, 'bilinear'), [], 3);
+        interpolated_color_samples = interpolated_color_samples(mask(:), :);
+        
+        colors_lab = rgb2lab(interpolated_color_samples);
         [L, dominant_colors] = kmeans(colors_lab, k, 'MaxIter', 10000, ...
                                       'Options', statset('UseParallel',1), ...
                                       'Replicates', replicates);

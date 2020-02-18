@@ -119,12 +119,15 @@ function saveImage(image, alpha, prefix, folder)
     
     db_info_filename = strcat(folder, '\buttons.mat');
     
-    colors = reshape(image, [], 3);
     mask = alpha > 128;
-    colors = im2double(colors(mask(:), :));
+    image = im2double(image);
     
-    entry.dominant_colors = kDominantColors(colors, 3, 20000, 5);
+    entry.dominant_colors = kDominantColors(image, mask, 3, 20000, 5);
+    
+    colors = reshape(image, [], 3);
+    colors = colors(mask(:), :);
     entry.mean_color_lab = mean(rgb2lab(colors));
+    
     entry.filename = filename;
     entry.diameter = size(image, 1);
     

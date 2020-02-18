@@ -1,7 +1,7 @@
-orig_image = imread("..\input_images\earring.png");
-orig_image = im2single(orig_image);
+orig_image = imread("..\input_images\646full-the-holy-mountain-screenshot.jpg");
+orig_image = im2double(orig_image);
 %orig_image = imresize(orig_image, 1/8);
-image = smoothColor(orig_image, 0.5);
+image = smoothColor(orig_image, 1.0);
 
 warning('off','images:bwfilt:tie');
 
@@ -33,7 +33,7 @@ min_radius = 4;
 max_radius = 800;
 radius_reduction_cutoff = 256;
 
-[L, ~] = imsegkmeans(image, num_colors);
+[L, ~] = imsegkmeans(im2single(image), num_colors);
 
 for i = 1:max(L(:))
     mask = L == i;
@@ -59,7 +59,7 @@ new_L = smoothLabels(new_L, floor(min_radius));
 new_L = conCompSplitLabel(new_L, 'ascend');
 
 orig_L = new_L;
-%%
+
 num_regions = max(new_L(:));
 
 figure
