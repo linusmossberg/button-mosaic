@@ -2,50 +2,50 @@
 
 ### Wheat Field with Cypresses - *Vincent van Gogh*
 
-<div about="output_images/wheat-field-with-cypresses.jpg">
-	<img src="output_images/wheat-field-with-cypresses.jpg" alt title="16868 buttons" />
+<div about="output_images/wheat-field-with-cypresses-button-mosaic.jpg">
+	<img src="output_images/wheat-field-with-cypresses-button-mosaic.jpg" alt="Button Mosaic of the painting 'Wheat Field with Cypresses' by Vincent van Gogh" title="16868 buttons" />
 	<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
 
 ### The Great Wave off Kanagawa - *Hokusai*
 
-<div about="output_images/great-wave-off-kanagawa.jpg">
-  <img src="output_images/great-wave-off-kanagawa.jpg" alt title="17403 buttons" />
+<div about="output_images/great-wave-off-kanagawa-button-mosaic.jpg">
+  <img src="output_images/great-wave-off-kanagawa-button-mosaic.jpg" alt="Button Mosaic of the painting 'The Great Wave off Kanagawa' by Hokusai" title="17403 buttons" />
   <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
 
 ### Girl with a Pearl Earring - *Johannes Vermeer*
 
-<div about="output_images/girl-with-a-pearl-earring.jpg">
-  <img src="output_images/girl-with-a-pearl-earring.jpg" alt title="11615 buttons" />
+<div about="output_images/girl-with-a-pearl-earring-button-mosaic.jpg">
+  <img src="output_images/girl-with-a-pearl-earring-button-mosaic.jpg" alt="Button Mosaic of the painting 'Girl with a Pearl Earring' by Johannes Vermeer" title="11615 buttons" />
   <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
 
 ### The Scream - *Edvard Munch*
 
-<div about="output_images/the-scream.jpg">
-  <img src="output_images/the-scream.jpg" alt title="38888 buttons" />
+<div about="output_images/the-scream-button-mosaic.jpg">
+  <img src="output_images/the-scream-button-mosaic.jpg" alt="Button Mosaic of the painting 'The Scream' by Edvard Munch" title="38888 buttons" />
   <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
 
 ### De Tio Största, nr 3 - *Hilma af Klint*
 
-<div about="output_images/de-tio-största-nr-3.jpg">
-	<img src="output_images/de-tio-största-nr-3.jpg" alt title="30852 buttons" />
+<div about="output_images/de-tio-största-nr-3-button-mosaic.jpg">
+	<img src="output_images/de-tio-största-nr-3-button-mosaic.jpg" alt="Button Mosaic of the painting 'De Tio Största, nr 3' by Hilma af Klint" title="30852 buttons" />
 	<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
 
 ### American Gothic - *Grant Wood*
 
-<div about="output_images/american-gothic.jpg">
-  <img src="output_images/american-gothic.jpg" alt title="17502 buttons"/>
+<div about="output_images/american-gothic-button-mosaic.jpg">
+  <img src="output_images/american-gothic-button-mosaic.jpg" alt="Button Mosaic of the painting 'American Gothic' by Grant Wood" title="17502 buttons"/>
   <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
 
 ### Braided Streams - *Katmai National Park and Preserve*
 
-<div about="output_images/braided-streams.jpg">
-	<img src="output_images/braided-streams.jpg" alt title="24675 buttons" />
+<div about="output_images/braided-streams-button-mosaic.jpg">
+	<img src="output_images/braided-streams-button-mosaic.jpg" alt="Button mosaic of a photo of braided streams by Katmai National Park and Preserve" title="24675 buttons" />
 	<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
 

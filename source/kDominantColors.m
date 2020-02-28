@@ -27,7 +27,7 @@ function result = kDominantColors(image, mask, k, max_colors, replicates, should
         result.colors_lab = zeros(k, 3);
         for i = 1:num_unique_colors
             c = unique_colors(i, :);
-            result.dominance(i) = sum(sum(abs(colors - c), 2) <= 1e-3);
+            result.dominance(i) = sum(sum(abs(color_samples - c), 2) <= 1e-3);
             result.colors_lab(i, :) = rgb2lab(c);
         end
         result.dominance = result.dominance / sum(result.dominance);

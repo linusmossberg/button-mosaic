@@ -28,7 +28,7 @@ warning('off','images:bwfilt:tie');
 % max_radius = 800;
 % radius_reduction_cutoff = 256;
 
-settings.num_colors = 12;
+settings.num_colors = 4;
 settings.min_radius = 4;
 settings.max_radius = 800;
 settings.radius_reduction_start = 256;
@@ -45,7 +45,10 @@ imshow(labeloverlay(ones(size(image)), label_image));
 
 circles = createPackedCircles(image, label_image, settings);
 
-result = createButtonMosaic(circles, zeros(size(image)), settings.scale, settings.AA);
+%result = createButtonMosaic(circles, zeros(size(image)), settings.scale, settings.AA);
+
+figure
+drawCircles(circles, size(image, 2), size(image, 1));
 
 figure
 imshow(result)
