@@ -62,6 +62,8 @@ imshow(result(:,:,:,3));title('Luma+Chroma Corrected Buttons')
 subplot(2,2,4)
 imshow(result(:,:,:,4));title('Luma+Chroma Corrected Buttons, Mean Corrected')
 
+%%
+
 addpath('lib')
 
 distance = 500:100:5000;
@@ -71,14 +73,14 @@ dEab = zeros(size(result, 4), length(distance));
 figure;hold on;
 for i = 1:size(result, 4)
     for j = 1:length(distance)
-        dEab(i,j) = HVS_dEab(image, result(:,:,:,i), distance(j));
+        dEab(i,j) = deltaEabHVS(image, result(:,:,:,i), distance(j));
     end
     plot(distance / 1000, dEab(i, :), '.-', 'LineWidth', 1, 'MarkerSize', 10)
 end
 
 hold off;
-xlabel('Distance')
-ylabel('?Eab')
+xlabel('Distance (meters)')
+ylabel('\DeltaE^*_a_b')
 
 legend('Uncorrected', 'Luma', 'Luma+Chroma', 'Luma+Chroma+Mean')
 
