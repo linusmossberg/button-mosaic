@@ -45,13 +45,43 @@ imshow(labeloverlay(ones(size(image)), label_image));
 
 circles = createPackedCircles(image, label_image, settings);
 
-%result = createButtonMosaic(circles, zeros(size(image)), settings.scale, settings.AA);
+result = createButtonMosaic(circles, size(image, 1:2), settings.scale, settings.AA);
+
+result(:,:,:,4) = matchMean(result(:,:,:,3), image);
+
+%figure
+%drawCircles(circles, size(image, 2), size(image, 1));
 
 figure
-drawCircles(circles, size(image, 2), size(image, 1));
+subplot(2,2,1)
+imshow(result(:,:,:,1));title('Uncorrected Buttons')
+subplot(2,2,2)
+imshow(result(:,:,:,2));title('Luma Corrected Buttons')
+subplot(2,2,3)
+imshow(result(:,:,:,3));title('Luma+Chroma Corrected Buttons')
+subplot(2,2,4)
+imshow(result(:,:,:,4));title('Luma+Chroma Corrected Buttons, Mean Corrected')
 
-figure
-imshow(result)
+addpath('lib')
+
+distance = 500:100:5000;
+
+dEab = zeros(size(result, 4), length(distance));
+
+figure;hold on;
+for i = 1:size(result, 4)
+    for j = 1:length(distance)
+        dEab(i,j) = HVS_dEab(image, result(:,:,:,i), distance(j));
+    end
+    plot(distance / 1000, dEab(i, :), '.-', 'LineWidth', 1, 'MarkerSize', 10)
+end
+
+hold off;
+xlabel('Distance')
+ylabel('?Eab')
+
+legend('Uncorrected', 'Luma', 'Luma+Chroma', 'Luma+Chroma+Mean')
+
 
 
 
