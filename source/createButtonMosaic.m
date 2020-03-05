@@ -1,4 +1,14 @@
-function [mosaic, corrected] = createButtonMosaic(circles, dims, S)
+function [mosaic, corrected] = createButtonMosaic(circles, image, S)
+
+    search_settings.num_matches = S.button_history;
+    search_settings.similarity_threshold = S.similarity_threshold;
+    search_settings.min_dominant_radius = S.min_dominant_radius;
+    search_settings.use_subset = S.unique_button_limit >= 1 && S.unique_button_limit <= 256;
+    
+    clear findMatchingButtons;
+    if(search_settings.use_subset)
+        generateLimitedDatabase(image, S.unique_button_limit);
+    end
     
     if nargin < 3 || ~isPowerOfTwo(S.scale)
         S.scale = 1;
@@ -8,6 +18,7 @@ function [mosaic, corrected] = createButtonMosaic(circles, dims, S)
         S.AA = 1;
     end
     
+    dims = size(image, 1:2);
     mosaic = zeros([dims * S.AA * S.scale, 3]);
     
     if nargout > 1
@@ -23,7 +34,7 @@ function [mosaic, corrected] = createButtonMosaic(circles, dims, S)
     f = waitbar(0, 'Finding and compositing matching objects');
     
     for i = 1:length(circles)
-        [button_filenames, mean_colors_lab] = findMatchingButtons(circles(i), S.button_history, S.similarity_threshold, S.min_dominant_radius);
+        [button_filenames, mean_colors_lab] = findMatchingButtons(circles(i), search_settings);
         
         button_filename = button_filenames(1);
         mean_color_lab = mean_colors_lab(1, :);

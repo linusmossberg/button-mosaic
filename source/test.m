@@ -1,7 +1,9 @@
-image = imread("..\input_images\AG_face.png");
+image = imread("..\input_images\eyevind_earle1.jpg");
 image = im2double(image);
-%image = imresize(image, 4);
+image = imresize(image, 1/2);
 %image = smoothColor(orig_image, 1.0);
+
+%generateLimitedDatabase(image, 64);
 
 warning('off','images:bwfilt:tie');
 
@@ -35,7 +37,7 @@ settings.num_colors = 8;
 settings.min_radius = 4;
 settings.max_radius = Inf;
 settings.radius_reduction_start = Inf;
-settings.smooth_est_scale = 1 / est_factor;
+settings.smooth_est_scale = min(1 / est_factor, 1);
 settings.label_close_radius = round(2 * est_factor);
 settings.label_min_area = (round(8 * est_factor))^2;
 
@@ -53,10 +55,11 @@ mosaic_settings.AA = 4;
 mosaic_settings.button_history = 20;
 mosaic_settings.similarity_threshold = 2.5;
 mosaic_settings.min_dominant_radius = 16;
+mosaic_settings.unique_button_limit = 8;
 
 result = zeros([size(image), 3]);
 
-[result(:,:,:,1), result(:,:,:,2)] = createButtonMosaic(circles, size(image, 1:2), mosaic_settings);
+[result(:,:,:,1), result(:,:,:,2)] = createButtonMosaic(circles, image, mosaic_settings);
 
 result(:,:,:,3) = matchMean(result(:,:,:,2), image);
 

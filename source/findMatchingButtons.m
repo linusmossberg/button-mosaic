@@ -1,10 +1,15 @@
-% Finds num_buttons of the most similar buttons.
+% Finds S.num_matches of the most similar buttons.
 
-function [filenames, mean_colors_lab] = findMatchingButtons(circle, num_buttons, similarity_threshold, min_dominant_radius)
+function [filenames, mean_colors_lab] = findMatchingButtons(circle, S)
     persistent buttons;
     
     if isempty(buttons)
-        buttons = load('..\buttons\buttons.mat');
+        
+        if S.use_subset && isfile('..\buttons\buttons-subset.mat')
+            buttons = load('..\buttons\buttons-subset.mat');
+        else
+            buttons = load('..\buttons\buttons.mat');
+        end
         
         if isfile('..\buttons\skip.json')
             skip = jsondecode(fileread('..\buttons\skip.json'));
@@ -16,12 +21,12 @@ function [filenames, mean_colors_lab] = findMatchingButtons(circle, num_buttons,
         end
     end
     
-    max_similarities = repmat(-1e10, 1, num_buttons);
-    indices = zeros(1, num_buttons, 'uint32');
+    max_similarities = repmat(-1e10, 1, S.num_matches);
+    indices = zeros(1, S.num_matches, 'uint32');
     
     for i = 1:length(buttons.data)
         
-        if circle.radius >= min_dominant_radius
+        if circle.radius >= S.min_dominant_radius
             similarity = dominantColorsSimilarity(circle.dominant_colors, buttons.data(i).dominant_colors, 30);
         else
             similarity = meanColorSimilarity(circle.mean_color_lab, buttons.data(i).mean_color_lab);
@@ -40,7 +45,7 @@ function [filenames, mean_colors_lab] = findMatchingButtons(circle, num_buttons,
         
         % Remove any matches that are too unsimilar compared to the most
         % similar match, determined by similarity_threshold.
-        indices(max_similarities(1) > (max_similarities + similarity_threshold)) = [];
+        indices(max_similarities(1) > (max_similarities + S.similarity_threshold)) = [];
         
         filenames = string({buttons.data(indices).filename});
         mean_colors_lab = reshape([buttons.data(indices).mean_color_lab], 3, [])';
