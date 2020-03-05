@@ -1,6 +1,6 @@
-image = imread("..\input_images\646full-the-holy-mountain-screenshot.jpg");
+image = imread("..\input_images\AG_face.png");
 image = im2double(image);
-%orig_image = imresize(orig_image, 1/8);
+%image = imresize(image, 4);
 %image = smoothColor(orig_image, 1.0);
 
 warning('off','images:bwfilt:tie');
@@ -28,15 +28,16 @@ warning('off','images:bwfilt:tie');
 % max_radius = 800;
 % radius_reduction_cutoff = 256;
 
-settings.num_colors = 4;
+width = size(image, 2);
+est_factor = width/1024;
+
+settings.num_colors = 8;
 settings.min_radius = 4;
-settings.max_radius = 800;
-settings.radius_reduction_start = 256;
-settings.smooth_est_scale = 1.0;
-settings.scale = 1;
-settings.AA = 4;
-settings.label_close_radius = 4;
-settings.label_min_area = 8*8;
+settings.max_radius = Inf;
+settings.radius_reduction_start = Inf;
+settings.smooth_est_scale = 1 / est_factor;
+settings.label_close_radius = round(2 * est_factor);
+settings.label_min_area = (round(8 * est_factor))^2;
 
 label_image = segmentImage(image, settings);
 
@@ -45,9 +46,19 @@ imshow(labeloverlay(ones(size(image)), label_image));
 
 circles = createPackedCircles(image, label_image, settings);
 
-result = createButtonMosaic(circles, size(image, 1:2), settings.scale, settings.AA);
+%%
 
-result(:,:,:,4) = matchMean(result(:,:,:,3), image);
+mosaic_settings.scale = 1;
+mosaic_settings.AA = 4;
+mosaic_settings.button_history = 20;
+mosaic_settings.similarity_threshold = 2.5;
+mosaic_settings.min_dominant_radius = 16;
+
+result = zeros([size(image), 3]);
+
+[result(:,:,:,1), result(:,:,:,2)] = createButtonMosaic(circles, size(image, 1:2), mosaic_settings);
+
+result(:,:,:,3) = matchMean(result(:,:,:,2), image);
 
 %figure
 %drawCircles(circles, size(image, 2), size(image, 1));
@@ -56,17 +67,13 @@ figure
 subplot(2,2,1)
 imshow(result(:,:,:,1));title('Uncorrected Buttons')
 subplot(2,2,2)
-imshow(result(:,:,:,2));title('Luma Corrected Buttons')
+imshow(result(:,:,:,2));title('Luma+Chroma Corrected Buttons')
 subplot(2,2,3)
-imshow(result(:,:,:,3));title('Luma+Chroma Corrected Buttons')
-subplot(2,2,4)
-imshow(result(:,:,:,4));title('Luma+Chroma Corrected Buttons, Mean Corrected')
-
-%%
+imshow(result(:,:,:,3));title('Luma+Chroma Corrected Buttons, Mean Corrected')
 
 addpath('lib')
 
-distance = 500:100:5000;
+distance = 500:250:10000;
 
 dEab = zeros(size(result, 4), length(distance));
 
@@ -82,7 +89,7 @@ hold off;
 xlabel('Distance (meters)')
 ylabel('\DeltaE^*_a_b')
 
-legend('Uncorrected', 'Luma', 'Luma+Chroma', 'Luma+Chroma+Mean')
+legend('Uncorrected', 'Luma+Chroma', 'Luma+Chroma+Mean')
 
 
 

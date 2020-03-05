@@ -1,21 +1,21 @@
-function result = createButtonMosaic(circles, dims, scale, AA)
+function [mosaic, corrected] = createButtonMosaic(circles, dims, S)
     
-    if nargin < 3 || ~isPowerOfTwo(scale)
-        scale = 1;
+    if nargin < 3 || ~isPowerOfTwo(S.scale)
+        S.scale = 1;
     end
 
-    if nargin < 4 || ~isPowerOfTwo(AA)
-        AA = 1;
+    if nargin < 4 || ~isPowerOfTwo(S.AA)
+        S.AA = 1;
     end
     
-    % The fourth dim contains:
-    % 1: Uncorrected mosaic
-    % 2: Mosaic with luma corrected buttons
-    % 3: Mosaic with luma and chroma corrected buttons
-    mosaic = zeros([dims * AA * scale, 3, 3]);
+    mosaic = zeros([dims * S.AA * S.scale, 3]);
     
-    button_history = 20;
-    previous_filenames = repmat("", 1, button_history);
+    if nargout > 1
+        % Mosaic with luma and chroma corrected buttons
+        corrected = mosaic;
+    end
+    
+    previous_filenames = repmat("", 1, S.button_history);
     current_idx = 1;
     
     pairs = containers.Map;
@@ -23,7 +23,7 @@ function result = createButtonMosaic(circles, dims, scale, AA)
     f = waitbar(0, 'Finding and compositing matching objects');
     
     for i = 1:length(circles)
-        [button_filenames, mean_colors_lab] = findMatchingButtons(circles(i), 20, 2.5);
+        [button_filenames, mean_colors_lab] = findMatchingButtons(circles(i), S.button_history, S.similarity_threshold, S.min_dominant_radius);
         
         button_filename = button_filenames(1);
         mean_color_lab = mean_colors_lab(1, :);
@@ -35,20 +35,21 @@ function result = createButtonMosaic(circles, dims, scale, AA)
         end
         
         previous_filenames(current_idx) = button_filename;
-        current_idx = 1 + mod(current_idx, button_history);
+        current_idx = 1 + mod(current_idx, S.button_history);
         
         if ~isKey(pairs, button_filename)
             button = struct;
             [button.image, ~, button.alpha] = imread(strcat('..\buttons\', button_filename));
-            button.image = im2double(button.image);
-            button.alpha = im2double(button.alpha);
             pairs(button_filename) = button;
         else
             button = pairs(button_filename);
         end
         
-        s_idx = (circles(i).position - circles(i).radius) * scale * AA;
-        e_idx = (circles(i).position + circles(i).radius) * scale * AA;
+        button.image = im2double(button.image);
+        button.alpha = im2double(button.alpha);
+        
+        s_idx = (circles(i).position - circles(i).radius) * S.scale * S.AA;
+        e_idx = (circles(i).position + circles(i).radius) * S.scale * S.AA;
     
         x_range = s_idx(2):e_idx(2);
         y_range = s_idx(1):e_idx(1);
@@ -62,18 +63,17 @@ function result = createButtonMosaic(circles, dims, scale, AA)
         button.image = imresize(button.image, dims, 'bicubic');
         button.alpha = imresize(button.alpha, dims, 'bicubic');
         
-        Lab_offset = circles(i).mean_color_lab - mean_color_lab;
-        L_offset = [Lab_offset(1), 0, 0];
+        mosaic(x_range, y_range, :) = applyAlpha(button.image, button.alpha, mosaic(x_range, y_range, :));
         
-        mosaic(x_range, y_range, :, 1) = applyAlpha(button.image, button.alpha, mosaic(x_range, y_range, :, 1));
-        mosaic(x_range, y_range, :, 2) = applyAlpha(CC(button.image, L_offset), button.alpha, mosaic(x_range, y_range, :, 2));
-        mosaic(x_range, y_range, :, 3) = applyAlpha(CC(button.image, Lab_offset), button.alpha, mosaic(x_range, y_range, :, 3));
+        if nargin > 1
+            Lab_offset = circles(i).mean_color_lab - mean_color_lab;
+            corrected(x_range, y_range, :) = applyAlpha(CC(button.image, Lab_offset), button.alpha, corrected(x_range, y_range, :));
+        end
         
         waitbar(i / length(circles), f, 'Finding and compositing matching objects');
     end
-    result(:,:,:,1) = imresize(mosaic(:,:,:,1), 1/AA, 'bicubic');
-    result(:,:,:,2) = imresize(mosaic(:,:,:,2), 1/AA, 'bicubic');
-    result(:,:,:,3) = imresize(mosaic(:,:,:,3), 1/AA, 'bicubic');
+    mosaic = imresize(mosaic, 1/S.AA, 'bicubic');
+    corrected = imresize(corrected, 1/S.AA, 'bicubic');
     close(f)
 end
 

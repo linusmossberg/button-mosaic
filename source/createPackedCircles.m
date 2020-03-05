@@ -52,8 +52,8 @@ function circles = createPackedCircles(image, label_image, settings)
             end
 
             if radius > settings.radius_reduction_start
-                radius_diff =  radius - radius_reduction_start;
-                radius = radius ./ (1 + radius_diff/max_radius);
+                radius_diff =  radius - settings.radius_reduction_start;
+                radius = radius ./ (1 + radius_diff/settings.max_radius);
             end
 
             radius = floor(radius);
