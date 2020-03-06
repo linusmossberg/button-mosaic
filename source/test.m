@@ -94,6 +94,33 @@ ylabel('\DeltaE^*_a_b')
 
 legend('Uncorrected', 'Luma+Chroma', 'Luma+Chroma+Mean')
 
+%%
+%shellysblogger_BY-NC-SA_0029.png
+[b, ~, a] = imread('../buttons/pexels_CC0_0014.png');
+mask = a > 128;
+a = im2double(a);
+b = im2double(b);
+figure
+subplot(1,3,1)
+imshow(applyAlpha(b, a, ones(size(b))));title('Button')
+
+subplot(1,3,2)
+kDominantColors(b, mask, 3, Inf, 5, true);title('Dominant Colors')
+
+subplot(1,3,3)
+colors = reshape(b, [], 3);
+colors = colors(mask(:), :);
+mean_color = mean(colors);
+c = repmat(reshape(mean(colors), 1, 1, 3), size(b, 1:2));
+imshow(applyAlpha(c, a, ones(size(b))));title('Mean Color')
+
+
+function result = applyAlpha(image, alpha, result)
+    for i = 1:3
+        result(:,:,i) = result(:,:,i) .* (1-alpha) + image(:,:,i) .* alpha;
+    end
+end
+
 
 
 
