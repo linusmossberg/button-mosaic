@@ -102,7 +102,6 @@ legend('Mean Color Similarity', 'Dominant Color Similarity')
 title('HVS \DeltaE^*_a_b Similarity Measure Comparison')
 
 %%
-%shellysblogger_BY-NC-SA_0029.png
 [b, ~, a] = imread('../buttons/pexels_CC0_0014.png');
 mask = a > 128;
 a = im2double(a);
@@ -127,9 +126,3 @@ function result = applyAlpha(image, alpha, result)
         result(:,:,i) = result(:,:,i) .* (1-alpha) + image(:,:,i) .* alpha;
     end
 end
-
-
-
-
-
-

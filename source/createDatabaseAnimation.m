@@ -1,12 +1,11 @@
 function createDatabaseAnimation(start_index)
     
-    % Has to be modified on screen sizes other than 1920x1080
-    crop_square = [590, 73, 1398 - 590, 881 - 73];
+    % Has to be modified for different screen sizes
+    crop_square = [580, 75, 1408 - 580, 903 - 75];
 
     buttons = load('../buttons/buttons.mat');
     
-    v = VideoWriter('database_animation4.mp4', 'MPEG-4');
-    v.Quality = 100;
+    v = VideoWriter('database_animation.avi', 'Uncompressed AVI');
     v.FrameRate = 60;
     open(v);
     
@@ -38,8 +37,8 @@ function createDatabaseAnimation(start_index)
         
 %         idx = 1 + mod(idx, 64);
 %         prev_buttons(idx) = prev_button;
-        prev_buttons = [prev_button prev_buttons];
-        prev_buttons(end) = [];
+        prev_buttons = [prev_buttons prev_button];
+        prev_buttons(1) = [];
         
         for i = 1:length(prev_buttons)
             dc = prev_buttons(i).dominant_colors;
@@ -76,14 +75,16 @@ function createDatabaseAnimation(start_index)
         images = {};
         for i = 1:length(buttons)
             if(isempty(buttons(i).filename))
-                images{1, i} = im2uint8(ones(128,128,3));
+                images{1, i} = im2uint8(ones(80,80,3));
             else
                 [b, ~, a] = imread(['../buttons/' buttons(i).filename]);
-                b = imresize(im2double(b), [128, 128], 'bicubic');
-                a = imresize(im2double(a), [128, 128], 'bicubic');
+                b = imresize(im2double(b), [80, 80], 'bicubic');
+                a = imresize(im2double(a), [80, 80], 'bicubic');
                 images{1, i} = im2uint8(applyAlpha(b, a, ones(size(b))));
             end
         end
+        
+        F = imresize(F, [640, 640], 'bicubic');
         
         writeVideo(v, imtile({imtile(images), F}));
     end
