@@ -1,7 +1,9 @@
 function drawCircles(c, width, height)
     for i = 1:length(c)  
-        c1 = clamp(lab2rgb(c(i).dominant_colors.colors_lab(1,:)), 0, 1);
+        c1 = clamp(lab2rgb(c(i).mean_color_lab), 0, 1);
+        c1 = [0.8, 0.8, 0.8];
         radius = (c(i).radius * 2 + 1) / 2;
+        radius = radius - 1;
         d = [radius * 2 radius * 2];
         pos = [c(i).position - (d / 2) d];
         rectangle('Position', pos, 'Curvature', [1 1], 'FaceColor', c1, 'LineStyle', 'none');

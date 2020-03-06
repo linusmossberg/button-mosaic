@@ -21,7 +21,9 @@ function [mosaic, corrected] = createButtonMosaic(circles, image, S)
     dims = size(image, 1:2);
     mosaic = zeros([dims * S.AA * S.scale, 3]);
     
-    if nargout > 1
+    produce_corrected = nargout > 1;
+    
+    if produce_corrected
         % Mosaic with luma and chroma corrected buttons
         corrected = mosaic;
     end
@@ -76,15 +78,19 @@ function [mosaic, corrected] = createButtonMosaic(circles, image, S)
         
         mosaic(x_range, y_range, :) = applyAlpha(button.image, button.alpha, mosaic(x_range, y_range, :));
         
-        if nargin > 1
+        if produce_corrected
             Lab_offset = circles(i).mean_color_lab - mean_color_lab;
             corrected(x_range, y_range, :) = applyAlpha(CC(button.image, Lab_offset), button.alpha, corrected(x_range, y_range, :));
         end
         
         waitbar(i / length(circles), f, 'Finding and compositing matching objects');
     end
+    
     mosaic = imresize(mosaic, 1/S.AA, 'bicubic');
-    corrected = imresize(corrected, 1/S.AA, 'bicubic');
+    if produce_corrected
+        corrected = imresize(corrected, 1/S.AA, 'bicubic');
+    end
+    
     close(f)
 end
 

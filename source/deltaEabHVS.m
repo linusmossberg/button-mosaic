@@ -1,6 +1,6 @@
 function result = deltaEabHVS(original, reproduced, view_distance)
     %f = MFTsp(15, 0.0847, view_distance); % 300 DPI
-    f = MFTsp(15, 0.2443, view_distance); % 104 DPI (4096px = 1m)
+    f = MFTsp(31, 0.2443, view_distance); % 104 DPI (4096px = 1m)
     
     hvs_original = filterColor(original, f);
     hvs_reproduced = filterColor(reproduced, f);
