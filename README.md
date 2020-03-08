@@ -1,5 +1,11 @@
 # Button Mosaic
 
+## Circle Packing
+
+![](output_images/circle-packing.gif)
+
+## Results
+
 ### Wheat Field with Cypresses - *Vincent van Gogh*
 
 <div about="output_images/wheat-field-with-cypresses-button-mosaic.jpg">

@@ -32,6 +32,8 @@ function createDatabaseAnimation(start_index)
     while ~isempty(buttons.data)
         closest_button_index = findClosestButton(prev_button);
         
+        disp(length(buttons.data))
+        
         prev_button = buttons.data(closest_button_index);
         buttons.data(closest_button_index) = [];
         

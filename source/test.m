@@ -1,6 +1,5 @@
-image = imread("..\input_images\katmainps_public-domain.png");
+image = imread("..\input_images\Great_Wave_off_Kanagawa2_rmv_4096.png");
 image = im2double(image);
-image = imresize(image, 4);
 %image = smoothColor(orig_image, 1.0);
 
 %generateLimitedDatabase(image, 64);
@@ -41,47 +40,75 @@ est_factor = width/1024;
 % settings.label_close_radius = round(2 * est_factor);
 % settings.label_min_area = (round(8 * est_factor))^2;
 
-settings.num_colors = 4;
-settings.min_radius = 4;
+settings.num_colors = 6;
 settings.max_radius = Inf;
 settings.radius_reduction_start = Inf;
 settings.smooth_est_scale = 0.25;
-settings.label_close_radius = 8;
-settings.label_min_area = 32*32;
+settings.label_close_radius = 2;
+settings.label_min_area = 8*8;
 
-label_image = segmentImage(image, settings);
+S = settings;
 
-figure
-imshow(labeloverlay(ones(size(image)), label_image));
+lab_image = rgb2lab(smoothColor(image, S.smooth_est_scale));
+colors_lab = reshape(lab_image, [], 3);
 
-circles = createPackedCircles(image, label_image, settings);
+rng(1);
+
+[label_vec, ~] = kmeans(colors_lab, S.num_colors, ...
+                        'MaxIter', 10000, ...
+                        'Options', statset('UseParallel',1), ...
+                        'Replicates', 5);
+
+label_image = reshape(label_vec, size(image, 1:2));
+
+for i = 1:max(label_image(:))
+    mask = label_image == i;
+
+    mask = bwareaopen(~mask, S.label_min_area);
+    mask = bwareaopen(~mask, S.label_min_area);
+    mask = imclose(mask, strel('disk', S.label_close_radius));
+    mask = bwareaopen(~mask, S.label_min_area);
+    mask = bwareaopen(~mask, S.label_min_area);
+
+    label_image(mask) = i; 
+end
+
+orig_label_image = conCompSplitLabel(label_image, 'descend');
 
 %%
-%figure;hold on;
 
-mosaic_settings.scale = 1;
-mosaic_settings.AA = 4;
-mosaic_settings.button_history = 20;
-mosaic_settings.similarity_threshold = 5;
-mosaic_settings.min_dominant_radius = 8;
-mosaic_settings.unique_button_limit = Inf;
+for min_radius = 17:4096
+    %label_image = segmentImage(image, settings);
+    
+    %%%
+    label_image = smoothLabels(orig_label_image, floor(min_radius));
+    label_image = conCompSplitLabel(label_image, 'ascend');
+    %%%
+
+    circles = createPackedCircles(image, label_image, settings);
+
+    mosaic_settings.scale = 1;
+    mosaic_settings.AA = 4;
+    mosaic_settings.button_history = 20;
+    mosaic_settings.similarity_threshold = 5;
+    mosaic_settings.min_dominant_radius = 8;
+    mosaic_settings.unique_button_limit = Inf;
+    
+    fig = figure;
+    set(fig, 'Position', get(0, 'Screensize'));
+    
+    drawCircles(circles, size(image, 2), size(image, 1));
+    drawnow
+    F = getframe(fig).cdata;
+    imwrite(F, ['circles-' num2str(length(circles)) '_min-radius-' num2str(min_radius, '%02d') '.png']);
+    close(fig)
+end
+    
+%%
 
 %[result(:,:,:,1), result(:,:,:,2)] = createButtonMosaic(circles, image, mosaic_settings);
-mosaic = createButtonMosaic(circles, image, mosaic_settings);
+%mosaic = createButtonMosaic(circles, image, mosaic_settings);
 
-%imwrite(mosaic, 'dominant_similarity.png');
-%imwrite(corrected, 'corrected.png');
-
-% figure
-% drawCircles(circles, size(image, 2), size(image, 1));
-
-% figure
-% subplot(2,2,1)
-% imshow(result(:,:,:,1));title('Uncorrected Buttons')
-% subplot(2,2,2)
-% imshow(result(:,:,:,2));title('Luma+Chroma Corrected Buttons')
-% subplot(2,2,3)
-% imshow(result(:,:,:,3));title('Luma+Chroma Corrected Buttons, Mean Corrected')
 
 addpath('lib')
 
@@ -121,8 +148,48 @@ c = repmat(reshape(mean(colors), 1, 1, 3), size(b, 1:2));
 imshow(applyAlpha(c, a, ones(size(b))));title('Mean Color')
 
 
-function result = applyAlpha(image, alpha, result)
-    for i = 1:3
-        result(:,:,i) = result(:,:,i) .* (1-alpha) + image(:,:,i) .* alpha;
+% function result = applyAlpha(image, alpha, result)
+%     for i = 1:3
+%         result(:,:,i) = result(:,:,i) .* (1-alpha) + image(:,:,i) .* alpha;
+%     end
+% end
+
+%%
+d = dir('*.png')
+[~, order] = sort([d.datenum], 'descend');
+names = string({d.name});
+names = names(order);
+
+v = VideoWriter('database_animation.avi', 'Uncompressed AVI');
+v.FrameRate = 8;
+open(v);
+
+for name = names
+    if(isfile(name))
+        writeVideo(v, imread(name));
+        disp(name);
     end
 end
+
+close(v)
+
+%%
+%fig = fig;
+p1 = plot(data(:,2), data(:,1), 'k-', 'LineWidth', 2)
+set(gca, 'XDir','reverse')
+hold on;
+
+v = VideoWriter('database_animation23.avi', 'Uncompressed AVI');
+v.FrameRate = 8;
+open(v);
+
+for i = 1:size(data, 1)
+    title(['Min Radius: ' sprintf('%2d', data(i,2)) 'px, Num Circles: ' sprintf('%5d', data(i,1))]);
+    p2 = plot(data(i,2), data(i,1), 'k.', 'MarkerSize', 30)
+    drawnow
+    F = getframe(gcf).cdata;
+    writeVideo(v, F);
+    delete(p2)
+end
+
+close(v)
