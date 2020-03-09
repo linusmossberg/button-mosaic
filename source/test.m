@@ -40,6 +40,7 @@ est_factor = width/1024;
 % settings.label_close_radius = round(2 * est_factor);
 % settings.label_min_area = (round(8 * est_factor))^2;
 
+settings.min_radius = 4;
 settings.num_colors = 6;
 settings.max_radius = Inf;
 settings.radius_reduction_start = Inf;
@@ -77,8 +78,10 @@ orig_label_image = conCompSplitLabel(label_image, 'descend');
 
 %%
 
-for min_radius = 17:4096
+for min_radius = 4:4096
     %label_image = segmentImage(image, settings);
+    
+    settings.min_radius = min_radius;
     
     %%%
     label_image = smoothLabels(orig_label_image, floor(min_radius));
@@ -91,8 +94,9 @@ for min_radius = 17:4096
     mosaic_settings.AA = 4;
     mosaic_settings.button_history = 20;
     mosaic_settings.similarity_threshold = 5;
-    mosaic_settings.min_dominant_radius = 8;
-    mosaic_settings.unique_button_limit = Inf;
+    mosaic_settings.min_dominant_radius = 16;
+    mosaic_settings.unique_button_limit = 4;
+    mosaic_settings.min_radius = settings.min_radius;
     
     fig = figure;
     set(fig, 'Position', get(0, 'Screensize'));
@@ -166,7 +170,7 @@ open(v);
 
 for name = names
     if(isfile(name))
-        writeVideo(v, imread(name));
+        writeVideo(v, imcrop(imread(name), [391, 78, 1598 - 391, 902 - 78,]));
         disp(name);
     end
 end

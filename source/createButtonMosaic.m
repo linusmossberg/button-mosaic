@@ -7,7 +7,7 @@ function [mosaic, corrected] = createButtonMosaic(circles, image, S)
     
     clear findMatchingButtons;
     if(search_settings.use_subset)
-        generateLimitedDatabase(image, S.unique_button_limit);
+        createLimitedDatabase(image, S.unique_button_limit);
     end
     
     if nargin < 3 || ~isPowerOfTwo(S.scale)
