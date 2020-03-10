@@ -75,16 +75,21 @@ for i = 1:max(label_image(:))
 end
 
 orig_label_image = conCompSplitLabel(label_image, 'descend');
-
 %%
-
-for min_radius = 4:4096
+for min_radius = 65:4096
+    tic
     %label_image = segmentImage(image, settings);
     
     settings.min_radius = min_radius;
     
     %%%
-    label_image = smoothLabels(orig_label_image, floor(min_radius));
+    %label_image = smoothLabels(orig_label_image, floor(min_radius));
+    %label_image = conCompSplitLabel(label_image, 'ascend');
+    dim = 1 + 2 * min_radius;
+    [X, Y] = meshgrid(1:dim, 1:dim);
+    center = (dim + 1) / 2;
+    structuring_element = sqrt((X-center).^2 + (Y-center).^2) <= min_radius;
+    label_image = imopen(orig_label_image, structuring_element);
     label_image = conCompSplitLabel(label_image, 'ascend');
     %%%
 
@@ -106,6 +111,7 @@ for min_radius = 4:4096
     F = getframe(fig).cdata;
     imwrite(F, ['circles-' num2str(length(circles)) '_min-radius-' num2str(min_radius, '%02d') '.png']);
     close(fig)
+    toc
 end
     
 %%
@@ -165,12 +171,12 @@ names = string({d.name});
 names = names(order);
 
 v = VideoWriter('database_animation.avi', 'Uncompressed AVI');
-v.FrameRate = 8;
+v.FrameRate = 10;
 open(v);
 
 for name = names
     if(isfile(name))
-        writeVideo(v, imcrop(imread(name), [391, 78, 1598 - 391, 902 - 78,]));
+        writeVideo(v, imcrop(imread(name), [390, 77, 1599 - 390, 903 - 77,]));
         disp(name);
     end
 end
@@ -197,3 +203,30 @@ for i = 1:size(data, 1)
 end
 
 close(v)
+%%
+v = VideoReader('C:\Users\Me\Documents\TNM097\stuff2\database_animation.avi');
+vw = VideoWriter('C:\Users\Me\Documents\TNM097\stuff2\database_animation_2.avi', 'Uncompressed AVI');
+vw.FrameRate = 10;
+open(vw)
+
+colors = [];
+while hasFrame(v)
+    %frame = imresize(readFrame(v), 960/1208, 'bicubic');
+    frame = readFrame(v);
+    writeVideo(vw, frame);
+    frame = imresize(frame, 0.25, 'nearest');
+    frame = rgb2lab(frame);
+    colors = [colors ; reshape(frame, [], 3)];
+    disp(rand())
+end
+k = 64;
+[~, C] = kmeans(colors, k, 'MaxIter', 10000, 'Replicates', 5);
+
+[~,order] = sort(C(:,1));
+C = C(order, :);
+
+C = clamp(lab2rgb(C), 0, 1);
+C = [C ; ones(256 - k, 3)];
+
+imwrite(reshape(C, [], 16, 3), 'C:\Users\Me\Documents\TNM097\stuff2\palette.png')
+close(vw)
