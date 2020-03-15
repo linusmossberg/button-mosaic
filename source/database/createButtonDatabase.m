@@ -1,6 +1,6 @@
 function createButtonDatabase(folder, out_folder)
     
-    %return; % avoid accidentally running and ruining db
+    return; % avoid accidentally running and ruining db
 
     clear saveImage;
     

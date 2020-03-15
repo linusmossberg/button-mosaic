@@ -55,6 +55,25 @@
 
 <img src="output_images/circle-packing.gif" width="100%">
 
+## Usage
+
+Set the MATLAB working directory to the *source* directory to use the program. The simplest use i then:
+```cpp
+[mosaic, corrected] = buttonMosaic(image);
+
+```
+where the input *image* is the RGB-image that should be reproduced and the outputs *mosaic* and *corrected* are the resulting mosaic with and without color correction. For more advanced use, see [source/examples.m](source/examples.m).
+
+## Requirements
+
+The following products are required to run the program:
+
+| Name                                    | Version      |
+| --------------------------------------- | ------------ |
+| Matlab                                  | R2019b (9.7) |
+| Image Processing Toolbox                | 11.0         |
+| Statistics and Machine Learning Toolbox | 11.6         |
+
 ## License and Attributions
 
 I've created the database of buttons by splitting, cropping, masking and resizing images of buttons sourced from various places. All source images are licensed to permit sharing and adaption and I've attributed the creators of these images under *attributions* below.

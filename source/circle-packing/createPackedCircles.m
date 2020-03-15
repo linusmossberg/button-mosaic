@@ -1,4 +1,7 @@
-function circles = createPackedCircles(image, label_image, settings)
+% S requires the fields:
+% min_radius, max_radius, radius_reduction_start
+
+function circles = createPackedCircles(image, label_image, S)
     num_regions = max(label_image(:));
 
     circles = [];
@@ -47,13 +50,13 @@ function circles = createPackedCircles(image, label_image, settings)
             [~, idx] = min((row - mean(row)).^2 + (col - mean(col)).^2);
             centroid = [col(idx), row(idx)];
 
-            if(radius < settings.min_radius)
+            if(radius < S.min_radius)
                 break;
             end
 
-            if radius > settings.radius_reduction_start
-                radius_diff =  radius - settings.radius_reduction_start;
-                radius = radius ./ (1 + radius_diff/settings.max_radius);
+            if radius > S.radius_reduction_start
+                radius_diff =  radius - S.radius_reduction_start;
+                radius = radius ./ (1 + radius_diff/S.max_radius);
             end
 
             radius = floor(radius);

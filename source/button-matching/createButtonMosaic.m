@@ -1,3 +1,7 @@
+% S requires the fields:
+% button_history, similarity_threshold, min_dominant_radius, 
+% unique_button_limit, scale, AA
+
 function [mosaic, corrected] = createButtonMosaic(circles, image, S)
 
     search_settings.num_matches = S.button_history;
@@ -33,7 +37,7 @@ function [mosaic, corrected] = createButtonMosaic(circles, image, S)
     
     pairs = containers.Map;
     
-    f = waitbar(0, 'Finding and compositing matching objects');
+    f = waitbar(0, 'Finding and compositing matching buttons');
     
     for i = 1:length(circles)
         [button_filenames, mean_colors_lab] = findMatchingButtons(circles(i), search_settings);
@@ -83,7 +87,7 @@ function [mosaic, corrected] = createButtonMosaic(circles, image, S)
             corrected(x_range, y_range, :) = applyAlpha(CC(button.image, Lab_offset), button.alpha, corrected(x_range, y_range, :));
         end
         
-        waitbar(i / length(circles), f, 'Finding and compositing matching objects');
+        waitbar(i / length(circles), f, 'Finding and compositing matching buttons');
     end
     
     mosaic = imresize(mosaic, 1/S.AA, 'bicubic');

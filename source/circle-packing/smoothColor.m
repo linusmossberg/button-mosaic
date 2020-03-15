@@ -1,4 +1,9 @@
 function image = smoothColor(image, scale)
+
+    if scale <= 0 || scale > 1
+        return;
+    end
+
     f = waitbar(0, 'Smoothing image colors');
     for i = 1:3
         image(:,:,i) = diffuseWithEst(image(:,:,i), scale);

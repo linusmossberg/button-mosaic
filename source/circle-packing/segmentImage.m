@@ -1,3 +1,7 @@
+% S requires the fields:
+% smooth_est_scale, num_clusters, label_min_area, 
+% label_close_radius, min_radius
+
 function label_image = segmentImage(image, S)
 
     lab_image = rgb2lab(smoothColor(image, S.smooth_est_scale));
@@ -5,7 +9,7 @@ function label_image = segmentImage(image, S)
     
     rng(1);
     
-    [label_vec, ~] = kmeans(colors_lab, S.num_colors, ...
+    [label_vec, ~] = kmeans(colors_lab, S.num_clusters, ...
                             'MaxIter', 10000, ...
                             'Options', statset('UseParallel',1), ...
                             'Replicates', 5);
