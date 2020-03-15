@@ -34,4 +34,3 @@ function label_image = segmentImage(image, S)
 
     label_image = conCompSplitLabel(label_image, 'ascend');
 end
-

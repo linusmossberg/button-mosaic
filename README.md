@@ -57,12 +57,11 @@
 
 ## Usage
 
-Set the MATLAB working directory to the *source* directory to use the program. The simplest use i then:
-```cpp
-[mosaic, corrected] = buttonMosaic(image);
-
+Set the MATLAB working directory to the *source* directory to use the program. The simplest use is then:
 ```
-where the input *image* is the RGB-image that should be reproduced and the outputs *mosaic* and *corrected* are the resulting mosaic with and without color correction. For more advanced use, see [source/examples.m](source/examples.m).
+[mosaic, corrected] = buttonMosaic(image);
+```
+where the input *image* is the RGB-image that should be reproduced and the outputs *mosaic* and *corrected* are the resulting mosaics with and without color correction. For more advanced use, see [source/examples.m](source/examples.m).
 
 ## Requirements
 

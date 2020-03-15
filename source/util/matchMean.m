@@ -4,4 +4,3 @@ function result = matchMean(image, reference)
     move = reference_mean_color - image_mean_color;
     result = image + reshape(move, 1, 1, 3);
 end
-

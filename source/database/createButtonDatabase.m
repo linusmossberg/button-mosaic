@@ -158,24 +158,3 @@ end
 function y = easeInEaseOut(x, a)
     y = x.^a ./ (x.^a + (1-x).^a);
 end
-
-
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           
-           

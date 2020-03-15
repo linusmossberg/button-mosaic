@@ -45,4 +45,3 @@ function [circle_packing_settings, mosaic_settings] = estSettings(image)
     mosaic_settings.min_dominant_radius = 16;
     mosaic_settings.unique_button_limit = Inf;
 end
-

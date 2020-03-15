@@ -4,35 +4,6 @@ function L = smoothLabels(L, min_distance)
     
     num_labels = max(L(:));
     
-%     for i = 1:num_labels
-%         mask = L == i;
-%         
-%         % American gothic, Wheat field
-%         %d = 8;
-%         %radius = 2;
-%         
-%         % Hilma
-%         %d = 8
-%         %radius = 1;
-%         
-%         % Wave
-%         %none
-%         
-%         % Scream
-%         %d = 10;
-%         %radius = 2;
-%
-%         d = 32;
-%         radius = 8;
-%         
-%         mask = bwareaopen(~mask,d*d);
-%         mask = bwareaopen(~mask,d*d);
-%         mask = imclose(mask, strel('disk', radius));
-%         mask = bwareaopen(~mask,d*d);
-%         mask = bwareaopen(~mask,d*d);
-%         L(mask) = i; 
-%     end
-    
     for i = 1:num_labels
         mask = L == i;
         

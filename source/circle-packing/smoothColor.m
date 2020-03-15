@@ -22,5 +22,3 @@ function gray_image = diffuseWithEst(gray_image, scale)
                                'GradientThreshold', grad_thresh, ...
                                'NumberOfIterations', num_iter);
 end
-
-

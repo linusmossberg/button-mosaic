@@ -97,4 +97,3 @@ function result = applyAlpha(image, alpha, result)
         result(:,:,i) = result(:,:,i) .* (1-alpha) + image(:,:,i) .* alpha;
     end
 end
-

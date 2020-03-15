@@ -115,4 +115,3 @@ function result = isPowerOfTwo(n)
         result = (ceil(log2(n)) == floor(log2(n)));
     end
 end
-

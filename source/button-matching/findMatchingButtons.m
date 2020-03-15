@@ -54,4 +54,3 @@ function [filenames, mean_colors_lab] = findMatchingButtons(circle, S)
         mean_colors_lab = [];
     end
 end
-

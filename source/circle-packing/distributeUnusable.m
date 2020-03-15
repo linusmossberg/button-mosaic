@@ -29,4 +29,3 @@ function [L, remaining] = distributeUnusable(unusable, L, i, t)
         end
     end
 end
-

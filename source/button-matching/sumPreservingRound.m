@@ -13,4 +13,3 @@ function integers = sumPreservingRound(real_numbers)
     % Distribute the remainder to these integers.
     integers(idx(1:remainder)) = integers(idx(1:remainder)) + 1;
 end
-

@@ -114,4 +114,3 @@ function [L, circles] = createCircle(image, circles, centroid, radius, L, offset
     
     circles = [circles new_circle];
 end
-

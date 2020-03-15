@@ -59,4 +59,3 @@ function result = kDominantColors(image, mask, k, max_colors, replicates, should
         colormap(clamp(lab2rgb(result.colors_lab), 0, 1));
     end
 end
-
