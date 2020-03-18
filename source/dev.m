@@ -230,3 +230,32 @@ C = [C ; ones(256 - k, 3)];
 
 imwrite(reshape(C, [], 16, 3), 'C:\Users\Me\Documents\TNM097\stuff2\palette.png')
 close(vw)
+
+%%
+image = imread("..\input_images\Great_Wave_off_Kanagawa2_rmv_4096.png");
+addpath(genpath('.'));
+warning('off','images:bwfilt:tie');
+image = im2double(image);
+
+circle_packing_settings.min_radius = 4;
+circle_packing_settings.num_clusters = 12;
+circle_packing_settings.max_radius = Inf;
+circle_packing_settings.radius_reduction_start = Inf;
+circle_packing_settings.smooth_est_scale = 0.5;
+circle_packing_settings.label_close_radius = 8;
+circle_packing_settings.label_min_area = 1024;
+
+mosaic_settings.scale = 1;
+mosaic_settings.AA = 4;
+mosaic_settings.button_history = 1;
+mosaic_settings.similarity_threshold = 0;
+mosaic_settings.min_dominant_radius = 16;
+
+label_image = segmentImage(image, circle_packing_settings);
+circles = createPackedCircles(image, label_image, circle_packing_settings);
+
+for num_unique_buttons = 2.^(1:6)
+    mosaic_settings.unique_button_limit = num_unique_buttons;
+    mosaic = createButtonMosaic(circles, image, mosaic_settings);
+    imwrite(mosaic, sprintf('unique_%d.png', num_unique_buttons));
+end

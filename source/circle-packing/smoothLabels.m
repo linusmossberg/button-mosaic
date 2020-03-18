@@ -41,15 +41,12 @@ function L = smoothLabels(L, min_distance)
     close(f);
 end
 
-function result = removeUnusable(mask, min_distance)
-    distance = bwdist(~(mask & ~bwmorph(mask,'remove')));
-    valid = distance >= min_distance;
-        
+function result = removeUnusable(mask, min_distance)        
     dim = 1 + 2 * min_distance;
     [X, Y] = meshgrid(1:dim, 1:dim);
     center = (dim + 1) / 2;
         
-    structuring_element = sqrt((X-center).^2 + (Y-center).^2) <= min_distance;
+    structuring_element = (X-center).^2 + (Y-center).^2 <= (min_distance+0.5)^2;
         
-    result = imdilate(valid, structuring_element) & mask;
+    result = imopen(mask, structuring_element) & mask;
 end

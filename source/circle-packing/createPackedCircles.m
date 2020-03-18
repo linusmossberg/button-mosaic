@@ -96,7 +96,7 @@ function [L, circles] = createCircle(image, circles, centroid, radius, L, offset
     y_range = s_idx(1):e_idx(1);
     
     [Y, X] = meshgrid(y_range, x_range);
-    circle = (X - centroid(2)).^2 + (Y - centroid(1)).^2 <= radius^2;
+    circle = (X - centroid(2)).^2 + (Y - centroid(1)).^2 <= (radius+0.5)^2;
     
     region = L(x_range, y_range);
     region(circle) = false;

@@ -7,7 +7,7 @@ function [mosaic, corrected] = createButtonMosaic(circles, image, S)
     search_settings.num_matches = S.button_history;
     search_settings.similarity_threshold = S.similarity_threshold;
     search_settings.min_dominant_radius = S.min_dominant_radius;
-    search_settings.use_subset = S.unique_button_limit >= 1 && S.unique_button_limit <= 256;
+    search_settings.use_subset = S.unique_button_limit >= 1 && S.unique_button_limit <= 128;
     
     clear findMatchingButtons;
     if(search_settings.use_subset)
