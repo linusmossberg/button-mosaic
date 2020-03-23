@@ -104,7 +104,7 @@ function [L, circles] = createCircle(image, circles, centroid, radius, L, offset
     
     rgb_region = image(x_range, y_range, :);
     
-    new_circle.dominant_colors = kDominantColors(rgb_region, circle, 3, 10000, 3);
+    new_circle.dominant_colors = kDominantColors(rgb_region, circle, 3, 20000, 3);
     new_circle.radius = radius;
     new_circle.position = offset + centroid;
     

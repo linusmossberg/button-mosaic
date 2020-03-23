@@ -4,7 +4,7 @@ function result = kDominantColors(image, mask, k, max_colors, replicates, should
         should_plot = false;
     end
     
-    num_colors = prod(size(image), 1:2);
+    num_colors = sum(mask(:));
     
     resize_scale = 1;
     if(num_colors > max_colors)

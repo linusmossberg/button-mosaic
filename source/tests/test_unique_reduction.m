@@ -35,11 +35,15 @@ D65_wp = [0.9504, 1.0000, 1.0888];
 XYZ_reference = rgb2xyz(image, 'WhitePoint', 'd65');
 for num_unique_buttons = 2.^(1:6)
     XYZ_reproduced = rgb2xyz(im2double(imread(sprintf('unique_%d.png', num_unique_buttons))), 'WhitePoint', 'd65');
-    scielab_unique_reduction(i) = scielab(SPD, XYZ_reference, XYZ_reproduced, D65_wp, 'xyz');
+    scielab_map = scielab(SPD, XYZ_reference, XYZ_reproduced, D65_wp, 'xyz');
+    scielab_unique_reduction(i) = mean(scielab_map(:));
     i = i + 1;
 end
 
 bar(categorical(2.^(1:6)), scielab_unique_reduction)
+
+num_unique_buttons = 2.^(1:6);
+save('data.mat', 'scielab_unique_reduction', 'num_unique_buttons')
 
 title('S-CIELAB of images reproduced with different amounts of unique buttons')
 xlabel('Unique Buttons')

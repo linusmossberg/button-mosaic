@@ -7,7 +7,7 @@ function recomputeColorInfo()
         mask = alpha > 128;
         image = im2double(image);
         
-        entry.dominant_colors = kDominantColors(image, mask, 3, 100000, 5);
+        entry.dominant_colors = kDominantColors(image, mask, 3, Inf, 5);
 
         colors = reshape(image, [], 3);
         colors = colors(mask(:), :);
@@ -15,9 +15,10 @@ function recomputeColorInfo()
         
         buttons.data(i) = entry;
         
-        waitbar(i / length(buttons.data), f, 'Smoothing segmented region labels');
+        waitbar(i / length(buttons.data), f, 'Recomputing color info');
     end
     data = buttons.data;
     save('../buttons/buttons.mat', 'data');
+    close(f)
 end
 
