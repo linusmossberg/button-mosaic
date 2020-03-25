@@ -2,7 +2,7 @@ function [num_clusters, low_unique] = findNumClusters(image)
 
     max_clusters = 16;
     
-    num_unique_colors = size(uniquetol(reshape(image, [], 3), 1e-3, 'ByRows', true), 1);
+    num_unique_colors = size(unique(reshape(im2uint8(image), [], 3), 'rows'), 1);
     
     low_unique = false;
     if num_unique_colors <= max_clusters
@@ -11,11 +11,11 @@ function [num_clusters, low_unique] = findNumClusters(image)
         return;
     end
 
-    num_colors = prod(size(image), 1:2);
+    num_colors = prod(size(image, 1:2));
     max_colors = 256*256;
     
     if(num_colors > max_colors)
-        image = imresize(image, sqrt(max_colors/num_colors), 'nearest');
+        image = imresize(image, sqrt(max_colors/num_colors), 'bilinear');
     end
     
     image = rgb2lab(image);
