@@ -3,57 +3,29 @@
 ### Wheat Field with Cypresses - *Vincent van Gogh*
 
 <div about="output_images/wheat-field-with-cypresses-button-mosaic.jpg">
-	<img src="output_images/wheat-field-with-cypresses-button-mosaic.jpg" alt="Button Mosaic of the painting 'Wheat Field with Cypresses' by Vincent van Gogh" title="16868 buttons" />
+	<img src="output_images/wheat-field-with-cypresses-button-mosaic.jpg" alt="Button mosaic of the painting 'Wheat Field with Cypresses' by Vincent van Gogh" title="12 655 buttons" />
 	<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
 
 ### The Great Wave off Kanagawa - *Hokusai*
 
 <div about="output_images/great-wave-off-kanagawa-button-mosaic.jpg">
-  <img src="output_images/great-wave-off-kanagawa-button-mosaic.jpg" alt="Button Mosaic of the painting 'The Great Wave off Kanagawa' by Hokusai" title="17403 buttons" />
+  <img src="output_images/great-wave-off-kanagawa-button-mosaic.jpg" alt="Button mosaic of the painting 'The Great Wave off Kanagawa' by Hokusai" title="15 808 buttons" />
   <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
 
-### Girl with a Pearl Earring - *Johannes Vermeer*
+### The Scream (1910 version) - *Edvard Munch*
 
-<div about="output_images/girl-with-a-pearl-earring-button-mosaic.jpg">
-  <img src="output_images/girl-with-a-pearl-earring-button-mosaic.jpg" alt="Button Mosaic of the painting 'Girl with a Pearl Earring' by Johannes Vermeer" title="11615 buttons" />
+<div about="output_images/the-scream-1910-button-mosaic.jpg">
+  <img src="output_images/the-scream-1910-button-mosaic.jpg" alt="Button mosaic of the painting 'The Scream' (1910) by Edvard Munch" title="27 510 buttons" />
   <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
 
-### The Scream - *Edvard Munch*
+More results are availible in [output_images](output_images).
 
-<div about="output_images/the-scream-button-mosaic.jpg">
-  <img src="output_images/the-scream-button-mosaic.jpg" alt="Button Mosaic of the painting 'The Scream' by Edvard Munch" title="38888 buttons" />
-  <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
-</div>
+## Report
 
-### De Tio Största, nr 3 - *Hilma af Klint*
-
-<div about="output_images/de-tio-största-nr-3-button-mosaic.jpg">
-	<img src="output_images/de-tio-största-nr-3-button-mosaic.jpg" alt="Button Mosaic of the painting 'De Tio Största, nr 3' by Hilma af Klint" title="30852 buttons" />
-	<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
-</div>
-
-### American Gothic - *Grant Wood*
-
-<div about="output_images/american-gothic-button-mosaic.jpg">
-  <img src="output_images/american-gothic-button-mosaic.jpg" alt="Button Mosaic of the painting 'American Gothic' by Grant Wood" title="17502 buttons"/>
-  <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
-</div>
-
-### Braided Streams - *Katmai National Park and Preserve*
-
-<div about="output_images/braided-streams-button-mosaic.jpg">
-	<img src="output_images/braided-streams-button-mosaic.jpg" alt="Button mosaic of a photo of braided streams by Katmai National Park and Preserve" title="24675 buttons" />
-	<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
-</div>
-
-[Source Photo](https://www.flickr.com/photos/katmainps/43417091514)
-
-## Circle Packing
-
-<img src="output_images/circle-packing.gif" width="100%">
+A report describing this work in more detail is available [here](report.pdf). 
 
 ## Usage
 
@@ -62,6 +34,30 @@ Set the MATLAB working directory to the *source* directory to use the program. T
 [mosaic, corrected] = buttonMosaic(image);
 ```
 where the input *image* is the RGB-image that should be reproduced and the outputs *mosaic* and *corrected* are the resulting mosaics with and without color correction. For more advanced use, see [source/examples.m](source/examples.m).
+
+### Total Button Reduction
+The number of total buttons used in the reproduction can be reduced by increasing the minimum circle area, *circle_packing_settings.min_radius*.
+
+<div about="output_images/total-reduction.jpg">
+  <p align="center"><i>Images reproduced with different numbers of total buttons:</i></p>
+  <img src="output_images/total-reduction.jpg" alt="Images reproduced with different numbers of total buttons" title="" />
+  <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
+</div>
+
+<div about="output_images/circle-packing.gif">
+  <p align="center"><i>Circle packing with mimimum radius decreasing by one pixel each frame:</i></p>
+  <img src="output_images/circle-packing.gif" alt="Circle-packing GIF with diffrent minimum circle radius" width="100%" title="" />
+  <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"></a>
+</div>
+
+### Unique Button Reduction
+The program also has a setting to limit the number of unique buttons used in the reproduction, *mosaic_settings.unique_button_limit*. The program picks the most perceptually important buttons needed to reproduce the given reference image using K-means in CIELAB space. This is similar to Lloyd-Max quantization using the LBG-algorithm.
+
+<div about="output_images/unique-reduction.jpg">
+  <p align="center"><i>Images reproduced with different numbers of unique buttons:</i></p>
+  <img src="output_images/unique-reduction.jpg" alt="Images reproduced with different number of unique buttons" title="" />
+  <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
+</div>
 
 ## Requirements
 
