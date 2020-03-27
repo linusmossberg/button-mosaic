@@ -14,7 +14,7 @@
   <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
 
-### The Scream (1910 version) - *Edvard Munch*
+### The Scream (1910) - *Edvard Munch*
 
 <div about="output_images/the-scream-1910-button-mosaic.jpg">
   <img src="output_images/the-scream-1910-button-mosaic.jpg" alt="Button mosaic of the painting 'The Scream' (1910) by Edvard Munch" title="27 510 buttons" />
@@ -35,29 +35,29 @@ Set the MATLAB working directory to the *source* directory to use the program. T
 ```
 where the input *image* is the RGB-image that should be reproduced and the outputs *mosaic* and *corrected* are the resulting mosaics with and without color correction. For more advanced use, see [source/examples.m](source/examples.m).
 
-### Total Button Reduction
-The number of total buttons used in the reproduction can be reduced by increasing the minimum circle area, *circle_packing_settings.min_radius*.
+### Number of Total Buttons
+The number of total buttons used in the reproduction can be controlled by changing the minimum circle radius, *circle_packing_settings.min_radius*. The number of total buttons increases quadratically with decreasing minimum radius.
 
 <div about="output_images/total-reduction.jpg">
   <img src="output_images/total-reduction.jpg" alt="Images reproduced with different numbers of total buttons" title="" />
   <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
-  <p align="center"><i>Images reproduced with different numbers of total buttons.</i></p>
 </div>
+<p align="center"><i>Images reproduced with different numbers of total buttons.</i></p>
 
 <div about="output_images/circle-packing.gif">
   <img src="output_images/circle-packing.gif" alt="Circle-packing GIF with diffrent minimum circle radius" width="100%" title="" />
   <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"></a>
-  <p align="center"><i>Circle packing with mimimum radius decreasing by one pixel each frame.</i></p>
 </div>
+<p align="center"><i>Circle packing with mimimum radius decrementing one pixel each frame.</i></p>
 
-### Unique Button Reduction
-The program also has a setting to limit the number of unique buttons used in the reproduction, *mosaic_settings.unique_button_limit*. The program picks the most perceptually important buttons needed to reproduce the given reference image using K-means in CIELAB space. This is similar to Lloyd-Max quantization using the LBG-algorithm.
+### Number of Unique Buttons
+The program also has a setting to control the number of unique buttons used in the reproduction, *mosaic_settings.unique_button_limit*. The program picks the most perceptually important buttons needed to reproduce the given reference image using K-means in CIELAB space. This is similar to Lloyd-Max quantization using the LBG-algorithm.
 
 <div about="output_images/unique-reduction.jpg">
   <img src="output_images/unique-reduction.jpg" alt="Images reproduced with different number of unique buttons" title="" />
   <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
-  <p align="center"><i>Images reproduced with different numbers of unique buttons:</i></p>
 </div>
+<p align="center"><i>Images reproduced with different numbers of unique buttons.</i></p>
 
 ## Requirements
 
