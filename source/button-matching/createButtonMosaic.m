@@ -2,7 +2,7 @@
 % button_history, similarity_threshold, min_dominant_radius, 
 % unique_button_limit, scale, AA
 
-function [mosaic, corrected] = createButtonMosaic(circles, image, S)
+function [mosaic, corrected] = createButtonMosaic(circles, image_lab, S)
 
     search_settings.num_matches = S.button_history;
     search_settings.similarity_threshold = S.similarity_threshold;
@@ -11,7 +11,7 @@ function [mosaic, corrected] = createButtonMosaic(circles, image, S)
     
     clear findMatchingButtons;
     if(search_settings.use_subset)
-        createLimitedDatabase(image, S.unique_button_limit);
+        createLimitedDatabase(image_lab, S.unique_button_limit);
     end
     
     if nargin < 3 || ~isPowerOfTwo(S.scale)
@@ -22,7 +22,7 @@ function [mosaic, corrected] = createButtonMosaic(circles, image, S)
         S.AA = 1;
     end
     
-    dims = size(image, 1:2);
+    dims = size(image_lab, 1:2);
     mosaic = zeros([dims * S.AA * S.scale, 3]);
     
     produce_corrected = nargout > 1;

@@ -1,5 +1,5 @@
-function createLimitedDatabase(image, num_buttons)
-    colors_lab = reshape(rgb2lab(image), [], 3);
+function createLimitedDatabase(image_lab, num_buttons)
+    colors_lab = reshape(image_lab, [], 3);
     
     [label_vec, ~] = kmeans(colors_lab, num_buttons, ...
                             'MaxIter', 10000);
@@ -8,8 +8,8 @@ function createLimitedDatabase(image, num_buttons)
     
     buttons_subset = struct;
     for i = 1:max(label_vec)
-        mask = reshape(label_vec == i, size(image, 1:2));
-        dominant_colors = kDominantColors(image, mask, 3, Inf, 5);
+        mask = reshape(label_vec == i, size(image_lab, 1:2));
+        dominant_colors = kDominantColors(image_lab, mask, 3, Inf, 5);
         buttons_subset.data(i) = findBestButton(dominant_colors);
     end
     data = buttons_subset.data;

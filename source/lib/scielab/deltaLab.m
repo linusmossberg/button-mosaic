@@ -13,7 +13,7 @@ function [d, lab1, lab2] = deltaLab(xyz1, xyz2, whitepoint, exp, k94)
 %   delta E, using the numbers in k94 as the k parameter (see
 %   deltaE94). If k94 is only one number, use the default k=[1 1 1].
 %
-% Functions called: xyz2lab, deltaE94.
+% Functions called: xyz2lab_cie, deltaE94.
 %
 % Xuemei Zhang 10/26/95
 % Last modified 4/15/98
@@ -34,8 +34,8 @@ if (m(2)~=3)
   xyz2 = reshape(xyz2, prod(m)/3, 3);
 end
 
-lab1 = xyz2lab(xyz1, whitepoint, exp);
-lab2 = xyz2lab(xyz2, whitepoint, exp);
+lab1 = xyz2lab_cie(xyz1, whitepoint, exp);
+lab2 = xyz2lab_cie(xyz2, whitepoint, exp);
 
 if (nargin>4)
   if (length(k94)<3)

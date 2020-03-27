@@ -1,14 +1,19 @@
-function image = smoothColor(image, scale)
+function image_lab = smoothColor(image_lab, scale)
 
     if scale <= 0 || scale > 1
         return;
     end
+    
+    image = lab2rgb(image_lab);
 
     f = waitbar(0, 'Smoothing image colors');
     for i = 1:3
         image(:,:,i) = diffuseWithEst(image(:,:,i), scale);
         waitbar(i/3, f, 'Smoothing image colors');
     end
+    
+    image_lab = rgb2lab(image);
+    
     close(f)
 end
 

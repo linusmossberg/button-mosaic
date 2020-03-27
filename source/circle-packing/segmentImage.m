@@ -2,9 +2,9 @@
 % smooth_est_scale, num_clusters, label_min_area, 
 % label_close_radius, min_radius
 
-function label_image = segmentImage(image, S)
+function label_image = segmentImage(image_lab, S)
 
-    lab_image = rgb2lab(smoothColor(image, S.smooth_est_scale));
+    lab_image = smoothColor(image_lab, S.smooth_est_scale);
     colors_lab = reshape(lab_image, [], 3);
     
     rng(1);
@@ -14,7 +14,7 @@ function label_image = segmentImage(image, S)
                             'Options', statset('UseParallel',1), ...
                             'Replicates', 5);
                         
-    label_image = reshape(label_vec, size(image, 1:2));
+    label_image = reshape(label_vec, size(image_lab, 1:2));
 
     for i = 1:max(label_image(:))
         mask = label_image == i;

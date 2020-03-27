@@ -1,8 +1,8 @@
-function [num_clusters, low_unique] = findNumClusters(image)
+function [num_clusters, low_unique] = findNumClusters(image_lab)
 
     max_clusters = 16;
     
-    num_unique_colors = size(unique(reshape(im2uint8(image), [], 3), 'rows'), 1);
+    num_unique_colors = size(unique(reshape(im2uint8(lab2rgb(image_lab)), [], 3), 'rows'), 1);
     
     low_unique = false;
     if num_unique_colors <= max_clusters
@@ -11,22 +11,20 @@ function [num_clusters, low_unique] = findNumClusters(image)
         return;
     end
 
-    num_colors = prod(size(image, 1:2));
+    num_colors = prod(size(image_lab, 1:2));
     max_colors = 256*256;
     
     if(num_colors > max_colors)
-        image = imresize(image, sqrt(max_colors/num_colors), 'bilinear');
+        image_lab = imresize(image_lab, sqrt(max_colors/num_colors), 'bilinear');
     end
-    
-    image = rgb2lab(image);
 
-    image_vec = reshape(image, [], 3);
+    colors_lab = reshape(image_lab, [], 3);
 
     kmeans_func = @(X,K)(kmeans(X, K, 'MaxIter', 10000, ...
                                       'Options', statset('UseParallel',1), ...
                                       'Replicates', 3));
 
-    evaluation = evalclusters(image_vec, kmeans_func, 'CalinskiHarabasz', 'KList', 1:max_clusters);
+    evaluation = evalclusters(colors_lab, kmeans_func, 'CalinskiHarabasz', 'KList', 1:max_clusters);
 
     num_clusters = evaluation.OptimalK;
 end

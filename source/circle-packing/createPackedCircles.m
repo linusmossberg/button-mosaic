@@ -1,7 +1,7 @@
 % S requires the fields:
 % min_radius, max_radius, radius_reduction_start
 
-function circles = createPackedCircles(image, label_image, S)
+function circles = createPackedCircles(image_lab, label_image, S)
     num_regions = max(label_image(:));
 
     circles = [];
@@ -29,10 +29,10 @@ function circles = createPackedCircles(image, label_image, S)
             BB(2) = clamp(BB(2) - 1, 1, h);
 
             small_mask = mask(BB(2):BB(2)+BB(4)-1, BB(1):BB(1)+BB(3)-1);
-            small_image = image(BB(2):BB(2)+BB(4)-1, BB(1):BB(1)+BB(3)-1, :);
+            small_image_lab = image_lab(BB(2):BB(2)+BB(4)-1, BB(1):BB(1)+BB(3)-1, :);
             offset = [BB(1) - 1, BB(2) - 1];
         else
-            small_image = image;
+            small_image_lab = image_lab;
             small_mask = remaining;
             offset = [0, 0];
         end
@@ -61,7 +61,7 @@ function circles = createPackedCircles(image, label_image, S)
 
             radius = floor(radius);
 
-            [small_mask, circles] = createCircle(small_image, circles, centroid, radius, small_mask, offset);
+            [small_mask, circles] = createCircle(small_image_lab, circles, centroid, radius, small_mask, offset);
         end
 
         if(i <= (num_regions - 1))
@@ -85,7 +85,7 @@ function circles = createPackedCircles(image, label_image, S)
     close(f)
 end
 
-function [L, circles] = createCircle(image, circles, centroid, radius, L, offset)
+function [L, circles] = createCircle(image_lab, circles, centroid, radius, L, offset)
 
     new_circle = struct;
 
@@ -102,15 +102,15 @@ function [L, circles] = createCircle(image, circles, centroid, radius, L, offset
     region(circle) = false;
     L(x_range, y_range) = region;
     
-    rgb_region = image(x_range, y_range, :);
+    lab_region = image_lab(x_range, y_range, :);
     
-    new_circle.dominant_colors = kDominantColors(rgb_region, circle, 3, 20000, 3);
+    new_circle.dominant_colors = kDominantColors(lab_region, circle, 3, 20000, 3);
     new_circle.radius = radius;
     new_circle.position = offset + centroid;
     
-    colors = reshape(rgb_region, [], 3);
-    colors = colors(circle(:), :);
-    new_circle.mean_color_lab = mean(rgb2lab(colors));
+    colors_lab = reshape(lab_region, [], 3);
+    colors_lab = colors_lab(circle(:), :);
+    new_circle.mean_color_lab = mean(colors_lab);
     
     circles = [circles new_circle];
 end

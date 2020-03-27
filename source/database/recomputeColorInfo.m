@@ -5,13 +5,13 @@ function recomputeColorInfo()
         entry = buttons.data(i);
         [image, ~, alpha] = imread(sprintf('../buttons/%s', entry.filename));
         mask = alpha > 128;
-        image = im2double(image);
+        image_lab = rgb2lab(im2double(image));
         
-        entry.dominant_colors = kDominantColors(image, mask, 3, Inf, 5);
+        entry.dominant_colors = kDominantColors(image_lab, mask, 3, Inf, 5);
 
-        colors = reshape(image, [], 3);
-        colors = colors(mask(:), :);
-        entry.mean_color_lab = mean(rgb2lab(colors));
+        colors_lab = reshape(image_lab, [], 3);
+        colors_lab = colors_lab(mask(:), :);
+        entry.mean_color_lab = mean(colors_lab);
         
         buttons.data(i) = entry;
         

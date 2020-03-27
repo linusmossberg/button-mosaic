@@ -38,7 +38,7 @@ function result = scielab(sampPerDeg, image1, image2, whitepoint, imageformat,k)
 % Functions called: changeColorSpace, cmatrix,
 %                   getPlanes, pad4conv, resize, deltaLab,
 %                   separableFilters, separableConv.
-%                   (implicit: gauss, gauss2, sumGauss, xyz2lab).
+%                   (implicit: gauss, gauss2, sumGauss, xyz2lab_cie).
 %
 % Xuemei Zhang  1/28/96
 % Last Modified 4/15/98

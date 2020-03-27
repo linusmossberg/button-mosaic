@@ -1,5 +1,5 @@
-function lab = xyz2lab(xyz, whitepoint, exp)
-% xyz2lab(xyz,whitepoint,exp)
+function lab = xyz2lab_cie(xyz, whitepoint, exp)
+% xyz2lab_cie(xyz,whitepoint,exp)
 %
 % Converts colors in XYZ coordinates into CIEL*a*b* coordinates.
 %

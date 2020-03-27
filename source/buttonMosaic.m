@@ -3,26 +3,26 @@ function [mosaic, corrected] = buttonMosaic(image, circle_packing_settings, mosa
     addpath(genpath('.'));
     warning('off','images:bwfilt:tie');
 
-    image = im2double(image);
+    image_lab = rgb2lab(im2double(image));
     
     if nargin < 3
-        [circle_packing_settings, mosaic_settings] = estSettings(image);
+        [circle_packing_settings, mosaic_settings] = estSettings(image_lab);
     end
 
-    label_image = segmentImage(image, circle_packing_settings);
-    circles = createPackedCircles(image, label_image, circle_packing_settings);
+    label_image = segmentImage(image_lab, circle_packing_settings);
+    circles = createPackedCircles(image_lab, label_image, circle_packing_settings);
     
     if nargout > 1
-        [mosaic, corrected] = createButtonMosaic(circles, image, mosaic_settings);
+        [mosaic, corrected] = createButtonMosaic(circles, image_lab, mosaic_settings);
     else
-        mosaic = createButtonMosaic(circles, image, mosaic_settings);
+        mosaic = createButtonMosaic(circles, image_lab, mosaic_settings);
     end
 end
 
-function [circle_packing_settings, mosaic_settings] = estSettings(image)
-    width = size(image, 2);
+function [circle_packing_settings, mosaic_settings] = estSettings(image_lab)
+    width = size(image_lab, 2);
     est_factor = width/1024;
-    [num_clusters, low_unique] = findNumClusters(image);
+    [num_clusters, low_unique] = findNumClusters(image_lab);
     
     disp(['Number of clusters: ' num2str(num_clusters)])
 
