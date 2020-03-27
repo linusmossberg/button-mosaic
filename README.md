@@ -39,24 +39,24 @@ where the input *image* is the RGB-image that should be reproduced and the outpu
 The number of total buttons used in the reproduction can be reduced by increasing the minimum circle area, *circle_packing_settings.min_radius*.
 
 <div about="output_images/total-reduction.jpg">
-  <p align="center"><i>Images reproduced with different numbers of total buttons:</i></p>
   <img src="output_images/total-reduction.jpg" alt="Images reproduced with different numbers of total buttons" title="" />
   <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
+  <p align="center"><i>Images reproduced with different numbers of total buttons.</i></p>
 </div>
 
 <div about="output_images/circle-packing.gif">
-  <p align="center"><i>Circle packing with mimimum radius decreasing by one pixel each frame:</i></p>
   <img src="output_images/circle-packing.gif" alt="Circle-packing GIF with diffrent minimum circle radius" width="100%" title="" />
   <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"></a>
+  <p align="center"><i>Circle packing with mimimum radius decreasing by one pixel each frame.</i></p>
 </div>
 
 ### Unique Button Reduction
 The program also has a setting to limit the number of unique buttons used in the reproduction, *mosaic_settings.unique_button_limit*. The program picks the most perceptually important buttons needed to reproduce the given reference image using K-means in CIELAB space. This is similar to Lloyd-Max quantization using the LBG-algorithm.
 
 <div about="output_images/unique-reduction.jpg">
-  <p align="center"><i>Images reproduced with different numbers of unique buttons:</i></p>
   <img src="output_images/unique-reduction.jpg" alt="Images reproduced with different number of unique buttons" title="" />
   <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
+  <p align="center"><i>Images reproduced with different numbers of unique buttons:</i></p>
 </div>
 
 ## Requirements
