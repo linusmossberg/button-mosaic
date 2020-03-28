@@ -2,30 +2,19 @@
 
 ### Wheat Field with Cypresses - *Vincent van Gogh*
 
-<div about="output_images/wheat-field-with-cypresses-button-mosaic.jpg">
-	<img src="output_images/wheat-field-with-cypresses-button-mosaic.jpg" alt="Button mosaic of the painting 'Wheat Field with Cypresses' by Vincent van Gogh" title="12 655 buttons" />
+<div about="results/wheat-field-with-cypresses-button-mosaic.jpg">
+	<img src="results/wheat-field-with-cypresses-button-mosaic.jpg" alt="Button mosaic of the painting 'Wheat Field with Cypresses' by Vincent van Gogh" title="12 655 buttons" />
 	<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
 
 ### The Great Wave off Kanagawa - *Hokusai*
 
-<div about="output_images/great-wave-off-kanagawa-button-mosaic.jpg">
-  <img src="output_images/great-wave-off-kanagawa-button-mosaic.jpg" alt="Button mosaic of the painting 'The Great Wave off Kanagawa' by Hokusai" title="15 808 buttons" />
+<div about="results/great-wave-off-kanagawa-button-mosaic.jpg">
+  <img src="results/great-wave-off-kanagawa-button-mosaic.jpg" alt="Button mosaic of the painting 'The Great Wave off Kanagawa' by Hokusai" title="15 808 buttons" />
   <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
 
-### The Scream (1910) - *Edvard Munch*
-
-<div about="output_images/the-scream-1910-button-mosaic.jpg">
-  <img src="output_images/the-scream-1910-button-mosaic.jpg" alt="Button mosaic of the painting 'The Scream' (1910) by Edvard Munch" title="27 510 buttons" />
-  <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
-</div>
-
-More results are availible in [output_images](output_images).
-
-## Report
-
-A report describing this work in more detail is available [here](report.pdf). 
+### [More Results](results/README.md)
 
 ## Usage
 
@@ -33,31 +22,64 @@ Set the MATLAB working directory to the *source* directory to use the program. T
 ```
 [mosaic, corrected] = buttonMosaic(image);
 ```
-where the input *image* is the RGB-image that should be reproduced and the outputs *mosaic* and *corrected* are the resulting mosaics with and without color correction. For more advanced use, see [source/examples.m](source/examples.m).
+where the input *image* is the RGB-image that should be reproduced and the outputs *mosaic* and *corrected* are the resulting mosaics with and without color correction. For more advanced use, see [source/examples.m](source/examples.m) and [settings](#settings).
 
-### Number of Total Buttons
-The number of total buttons used in the reproduction can be controlled by changing the minimum circle radius, *circle_packing_settings.min_radius*. The number of total buttons increases quadratically with decreasing minimum radius.
+## Report
 
-<div about="output_images/total-reduction.jpg">
-  <img src="output_images/total-reduction.jpg" alt="Images reproduced with different numbers of total buttons" title="" />
+A report describing this work in more detail is available [here](report.pdf). 
+
+## Settings
+
+The program settings consists of two structs, *circle_packing_settings* and *mosaic_settings*.
+
+##### circle_packing_settings:
+
+| Setting                | Example Value | Explanation                                                                                                                                                         |
+|------------------------|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| min_radius             | 4             | [Minimum Radius](#minimum-radius)                                                                                                                                   |
+| num_clusters           | 5             | Number of perceptually distinct color regions that the image should be segmented to. The image segments are used to determine the size and position of circles.     |
+| max_radius             | Inf           | Maximum circle radius.                                                                                                                                              |
+| radius_reduction_start | Inf           | Radius where circle radii will start being asymptotically reduced towards max_radius.                                                                               |
+| smooth_est_scale       | 1             | Image crop factor when estimating settings for the anisotropic diffusion image smoothing. Large images have to be cropped to complete this step in reasonable time. |
+| label_close_radius     | 2             | Radius of circular structuring element used for pre-filtering the segmented image using morphological close.                                                            |
+| label_min_area         | 64            | Regions or holes below this area are removed from the segmented image in the pre-filtering step.                                                                    |
+
+##### mosaic_settings:
+
+| Setting              | Example Value | Explanation                                                                                                                                                                                       |
+|----------------------|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| scale                | 1             | Scale factor for the mosaic. If the input is 256x512 and *scale* is 2, then the resulting mosaic will be 512x1024.                                                                                |
+| AA                   | 4             | Anti-Aliasing supersampling factor. The mosaic is scaled by this factor and then downsampled by the same factor to reduce aliasing.                                                               |
+| button_history       | 20            | The size of the buffer that keeps track of previously used buttons.                                                                                                                               |
+| similarity_threshold | 5             | The program picks the best button match not contained in the button history if it is within this similarity threshold compared to the best button match. This is done to increase button variety. |
+| min_dominant_radius  | 16            | Circle radii above or equal to this uses dominant color matching to match buttons. Mean color matching is used for radii smaller than this.                                                       |
+| unique_button_limit  | Inf           | [Unique Button Limit](#unique-button-limit)                                                                                                                                                       |
+
+### Unique Button Limit
+The program has a setting to control the number of unique buttons used in the reproduction, *mosaic_settings.unique_button_limit*. The program picks the most perceptually important buttons needed to reproduce the given reference image using K-means in CIELAB space, similar to Lloyd-Max quantization using the LBG-algorithm.
+
+<div about="results/unique-reduction.jpg">
+  <img src="results/unique-reduction.jpg" alt="Images reproduced with different number of unique buttons" title="" />
+  <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
+</div>
+<p align="center"><i>Images reproduced with different numbers of unique buttons.</i></p>
+
+### Minimum Radius
+The number of total buttons used in the reproduction can also be controlled by changing the minimum circle radius, *circle_packing_settings.min_radius*. The number of total buttons increases quadratically with decreasing minimum radius.
+
+<div about="results/total-reduction.jpg">
+  <img src="results/total-reduction.jpg" alt="Images reproduced with different numbers of total buttons" title="" />
   <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
 <p align="center"><i>Images reproduced with different numbers of total buttons.</i></p>
 
-<div about="output_images/circle-packing.gif">
-  <img src="output_images/circle-packing.gif" alt="Circle-packing GIF with diffrent minimum circle radius" width="100%" title="" />
+---
+
+<div about="results/circle-packing.gif">
+  <img src="results/circle-packing.gif" alt="Circle-packing GIF with diffrent minimum circle radius" width="100%" title="" />
   <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"></a>
 </div>
-<p align="center"><i>Circle packing with mimimum radius decrementing one pixel each frame.</i></p>
-
-### Number of Unique Buttons
-The program also has a setting to control the number of unique buttons used in the reproduction, *mosaic_settings.unique_button_limit*. The program picks the most perceptually important buttons needed to reproduce the given reference image using K-means in CIELAB space. This is similar to Lloyd-Max quantization using the LBG-algorithm.
-
-<div about="output_images/unique-reduction.jpg">
-  <img src="output_images/unique-reduction.jpg" alt="Images reproduced with different number of unique buttons" title="" />
-  <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
-</div>
-<p align="center"><i>Images reproduced with different numbers of unique buttons.</i></p>
+<p align="center"><i>Circle packing with mimimum radius decreasing one pixel each frame.</i></p>
 
 ## Requirements
 
