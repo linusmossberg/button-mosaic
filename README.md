@@ -32,7 +32,8 @@ A report describing this work in more detail is available [here](report.pdf).
 
 The program settings consists of two structs, *circle_packing_settings* and *mosaic_settings*.
 
-##### circle_packing_settings:
+<details>
+<summary>circle_packing_settings</summary>
 
 | Setting                | Example Value | Explanation                                                                                                                                                         |
 |------------------------|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -44,7 +45,10 @@ The program settings consists of two structs, *circle_packing_settings* and *mos
 | label_close_radius     | 2             | Radius of circular structuring element used for pre-filtering the segmented image using morphological close.                                                            |
 | label_min_area         | 64            | Regions or holes below this area are removed from the segmented image in the pre-filtering step.                                                                    |
 
-##### mosaic_settings:
+</details>
+
+<details>
+<summary>mosaic_settings</summary>
 
 | Setting              | Example Value | Explanation                                                                                                                                                                                       |
 |----------------------|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -54,6 +58,8 @@ The program settings consists of two structs, *circle_packing_settings* and *mos
 | similarity_threshold | 5             | The program picks the best button match not contained in the button history if it is within this similarity threshold compared to the best button match. This is done to increase button variety. |
 | min_dominant_radius  | 16            | Circle radii above or equal to this uses dominant color matching to match buttons. Mean color matching is used for radii smaller than this.                                                       |
 | unique_button_limit  | Inf           | [Unique Button Limit](#unique-button-limit)                                                                                                                                                       |
+
+</details>
 
 ### Unique Button Limit
 The program has a setting to control the number of unique buttons used in the reproduction, *mosaic_settings.unique_button_limit*. The program picks the most perceptually important buttons needed to reproduce the given reference image using K-means in CIELAB space, similar to Lloyd-Max quantization using the LBG-algorithm.

@@ -28,7 +28,7 @@
 
 ### Braided Streams - *Katmai National Park and Preserve*
 
-<div about="output_images/braided-streams-button-mosaic.jpg">
-  <img src="output_images/braided-streams-button-mosaic.jpg" alt="Button mosaic of a photo of braided streams by Katmai National Park and Preserve" title="24 675 buttons">
+<div about="braided-streams-button-mosaic.jpg">
+  <img src="braided-streams-button-mosaic.jpg" alt="Button mosaic of a photo of braided streams by Katmai National Park and Preserve" title="24 675 buttons">
   <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
