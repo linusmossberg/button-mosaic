@@ -14,7 +14,7 @@
   <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
 
-### [More Results](results/README.md)
+### [More Results](https://linusmossberg.github.io/button-mosaic/results/)
 
 ## Report
 
