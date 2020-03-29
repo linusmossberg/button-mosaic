@@ -16,6 +16,10 @@
 
 ### [More Results](results/README.md)
 
+## Report
+
+A report describing this work in more detail is available [here](report.pdf). 
+
 ## Usage
 
 Set the MATLAB working directory to the *source* directory to use the program. The simplest use is then:
@@ -24,40 +28,36 @@ Set the MATLAB working directory to the *source* directory to use the program. T
 ```
 where the input *image* is the RGB-image that should be reproduced and the outputs *mosaic* and *corrected* are the resulting mosaics with and without color correction. For more advanced use, see [source/examples.m](source/examples.m) and [settings](#settings).
 
-## Report
-
-A report describing this work in more detail is available [here](report.pdf). 
-
 ## Settings
 
 The program settings consists of two structs, *circle_packing_settings* and *mosaic_settings*.
 
 <details>
-<summary>circle_packing_settings</summary>
+<summary>circle_packing_settings</summary><br/>
 
-| Setting                | Example Value | Explanation                                                                                                                                                         |
-|------------------------|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| min_radius             | 4             | [Minimum Radius](#minimum-radius)                                                                                                                                   |
-| num_clusters           | 5             | Number of perceptually distinct color regions that the image should be segmented to. The image segments are used to determine the size and position of circles.     |
-| max_radius             | Inf           | Maximum circle radius.                                                                                                                                              |
-| radius_reduction_start | Inf           | Radius where circle radii will start being asymptotically reduced towards max_radius.                                                                               |
-| smooth_est_scale       | 1             | Image crop factor when estimating settings for the anisotropic diffusion image smoothing. Large images have to be cropped to complete this step in reasonable time. |
-| label_close_radius     | 2             | Radius of circular structuring element used for pre-filtering the segmented image using morphological close.                                                            |
-| label_min_area         | 64            | Regions or holes below this area are removed from the segmented image in the pre-filtering step.                                                                    |
+| Field                  | Explanation                                                                                                                                                        |
+|------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| min_radius             | [Minimum Radius](#minimum-radius)                                                                                                                                  |
+| num_clusters           | Number of perceptually distinct color regions that the image should be segmented to. The image segments are used to determine the size and position of circles.    |
+| max_radius             | Maximum circle radius.                                                                                                                                             |
+| radius_reduction_start | Radius where circle radii will start being asymptotically reduced towards max_radius.                                                                              |
+| smooth_est_scale       | Image crop factor when estimating settings for the anisotropic diffusion image smoothing. Large images has to be cropped to complete this step in reasonable time. |
+| label_close_radius     | Radius of circular structuring element used for pre-filtering the segmented image using morphological close.                                                       |
+| label_min_area         | Regions or holes below this area are removed from the segmented image in the pre-filtering step.                                                                   |
 
 </details>
 
 <details>
-<summary>mosaic_settings</summary>
+<summary>mosaic_settings</summary><br/>
 
-| Setting              | Example Value | Explanation                                                                                                                                                                                       |
-|----------------------|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| scale                | 1             | Scale factor for the mosaic. If the input is 256x512 and *scale* is 2, then the resulting mosaic will be 512x1024.                                                                                |
-| AA                   | 4             | Anti-Aliasing supersampling factor. The mosaic is scaled by this factor and then downsampled by the same factor to reduce aliasing.                                                               |
-| button_history       | 20            | The size of the buffer that keeps track of previously used buttons.                                                                                                                               |
-| similarity_threshold | 5             | The program picks the best button match not contained in the button history if it is within this similarity threshold compared to the best button match. This is done to increase button variety. |
-| min_dominant_radius  | 16            | Circle radii above or equal to this uses dominant color matching to match buttons. Mean color matching is used for radii smaller than this.                                                       |
-| unique_button_limit  | Inf           | [Unique Button Limit](#unique-button-limit)                                                                                                                                                       |
+| Field                | Explanation                                                                                                                                                                                       |
+|----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| scale                | Scale factor for the mosaic. If the input is 256x512 and *scale* is 2, then the resulting mosaic will be 512x1024.                                                                                |
+| AA                   | Anti-Aliasing supersampling factor. The mosaic is scaled by this factor and then downsampled by the same factor to reduce aliasing.                                                               |
+| button_history       | The size of the buffer that keeps track of previously used buttons.                                                                                                                               |
+| similarity_threshold | The program picks the best button match not contained in the button history if it is within this similarity threshold compared to the best button match. This can be used to increase button variety. |
+| min_dominant_radius  | Circle radii above or equal to this uses dominant color matching to match buttons. Mean color matching is used for radii smaller than this.                                                       |
+| unique_button_limit  | [Unique Button Limit](#unique-button-limit)                                                                                                                                                       |
 
 </details>
 
@@ -205,7 +205,7 @@ License: <a href="https://creativecommons.org/licenses/by/2.0/">https://creative
 
 ___
 
-The reproduced paintings and photos are all in the public domain, but some of the source images of buttons are licensed under the share-alike license CC BY-NC-SA 2.0. The reproduced images above are therefore licensed under:
+The reproduced paintings and photos are all in the public domain, but some of the source images of buttons are licensed under the share-alike license CC BY-NC-SA 2.0. The reproduced images are therefore licensed under:
 
 <https://creativecommons.org/licenses/by-nc-sa/4.0/>
 
