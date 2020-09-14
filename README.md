@@ -14,7 +14,14 @@
   <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
 </div>
 
-### [More Results](https://linusmossberg.github.io/button-mosaic/results/)
+### The Scream (1910) - *Edvard Munch*
+
+<div about="results/the-scream-1910-button-mosaic.jpg">
+  <img src="results/the-scream-1910-button-mosaic.jpg" alt="Button mosaic of the painting 'The Scream' (1910) by Edvard Munch" title="27 510 buttons" />
+  <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"></a>
+</div>
+
+### [More Results](results/README.md)
 
 ## Report
 
